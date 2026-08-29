@@ -1,0 +1,24 @@
+{
+  "name": "octo-travel-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first travel planner with an optional AI itinerary assistant.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "types": "wrangler types",
+    "syntax": "node --check public/app.js && node --check 'functions/[[path]].js'",
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "wrangler pages functions build functions --outdir .wrangler/functions-build --project-directory . --build-output-directory public",
+    "check": "npm run syntax && npm run typecheck && npm run build",
+    "deploy": "npm run check && wrangler pages deploy public --project-name octo-travel-app --branch main"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.2",
+    "wrangler": "^4.127.1"
+  }
+}

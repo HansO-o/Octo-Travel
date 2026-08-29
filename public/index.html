@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4efe5">
+    <meta name="description" content="Roamline：带 AI 行程助手的轻量旅行规划 App。">
+    <title>Roamline · 旅行计划</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Roamline 首页">
+        <span class="brand-mark">R</span>
+        <span>Roamline<small>旅行计划</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="save-state" id="save-state">已保存到本机</span>
+        <button class="icon-button" id="reset-trip" type="button" title="恢复示例行程">↺</button>
+        <button class="chat-toggle" id="chat-toggle" type="button"><span>✦</span> AI 行程助手</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="trip-overview">
+        <div class="trip-heading">
+          <span class="overline">MY NEXT JOURNEY</span>
+          <div class="destination-row">
+            <input id="destination" class="destination" value="京都" aria-label="目的地" maxlength="40">
+            <span class="pin">⌖</span>
+          </div>
+          <p>把灵感排成真正走得完的一天。</p>
+        </div>
+
+        <div class="trip-meta">
+          <label><span>出发日期</span><input id="start-date" type="date"></label>
+          <label><span>天数</span><select id="day-count"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></label>
+          <div class="mini-stat"><span>行程点</span><strong id="stop-count">0</strong></div>
+          <div class="mini-stat"><span>预计步行</span><strong id="walk-total">0 min</strong></div>
+        </div>
+      </section>
+
+      <section class="planner-card">
+        <div class="days" id="days" role="tablist" aria-label="行程日期"></div>
+        <div class="planner-toolbar">
+          <div>
+            <span class="overline" id="active-date">DAY 1</span>
+            <h1 id="day-title">抵达与慢慢熟悉</h1>
+          </div>
+          <button class="add-button" id="open-add" type="button">＋ 添加地点</button>
+        </div>
+        <div class="timeline" id="timeline"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <span>○</span><h2>这一天还是空白</h2><p>添加第一个地点，或请 AI 帮你安排。</p>
+          <button class="add-button" type="button" data-open-add>添加地点</button>
+        </div>
+      </section>
+
+      <aside class="trip-notes">
+        <div class="notes-heading"><span class="overline">TRIP NOTES</span><span>自动保存</span></div>
+        <textarea id="trip-notes" maxlength="4000" placeholder="交通卡、预约号码、想吃的小店……"></textarea>
+      </aside>
+    </main>
+
+    <dialog id="add-dialog">
+      <form method="dialog" id="add-form">
+        <div class="dialog-head"><div><span class="overline">NEW STOP</span><h2>添加一个行程点</h2></div><button value="cancel" class="icon-button" aria-label="关闭">×</button></div>
+        <label><span>时间</span><input name="time" type="time" value="10:00" required></label>
+        <label><span>地点或活动</span><input name="title" maxlength="80" placeholder="例如：哲学之道散步" required></label>
+        <label><span>备注</span><textarea name="note" maxlength="240" placeholder="门票、路线或想做的事"></textarea></label>
+        <label><span>预计步行（分钟）</span><input name="walk" type="number" value="15" min="0" max="300"></label>
+        <div class="dialog-actions"><button value="cancel" class="ghost-button">取消</button><button value="default" class="add-button" id="save-stop">加入行程</button></div>
+      </form>
+    </dialog>
+
+    <div class="scrim" id="scrim" hidden></div>
+    <aside class="chat-panel" id="chat-panel" aria-hidden="true">
+      <div class="chat-head">
+        <div><span class="assistant-mark">✦</span><strong>AI 行程助手</strong><small>了解当前行程，可连续对话</small></div>
+        <div><button class="text-button" id="clear-chat" type="button">清空</button><button class="icon-button" id="close-chat" type="button" aria-label="关闭">×</button></div>
+      </div>
+      <div class="quick-prompts" id="quick-prompts">
+        <button type="button">帮我检查今天是否太赶</button>
+        <button type="button">给空闲时段推荐一个活动</button>
+        <button type="button">整理一份出发前清单</button>
+      </div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form class="chat-form" id="chat-form">
+        <textarea id="chat-input" rows="1" maxlength="3000" placeholder="问行程、交通、节奏或备忘……" required></textarea>
+        <button type="submit" id="send-chat" aria-label="发送">↑</button>
+      </form>
+      <p class="chat-note">AI 可能出错，营业时间与交通信息请另行核实。</p>
+    </aside>
+  </body>
+</html>
