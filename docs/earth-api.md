@@ -64,6 +64,68 @@ The browser sends messages and the current itinerary to Roamline's `/api/chat`. 
 
 `GET /health` only checks that the app is responding. It does **not** verify the Earth API domain, credentials, account balance, or model connection; a successful chat reply is the integration check.
 
+## 4. Check Earth API directly before redeploying
+
+Use these checks after the migration is confirmed and you have an Earth API key. They isolate the upstream connection from Roamline's configuration. These are request templates, not a report of a successful live inference test.
+
+In Bash, enter the key interactively so it is not included in the command you type:
+
+```bash
+read -r -s -p "Earth API key: " EARTH_API_KEY
+export EARTH_API_KEY
+printf '\n'
+
+```
+
+First request the model catalog. This does not submit a generation request:
+
+```bash
+curl --silent --show-error --fail-with-body \
+  --connect-timeout 10 --max-time 30 \
+  https://api.earth.icu/v1/models \
+  -H "Authorization: Bearer $EARTH_API_KEY"
+
+```
+
+A successful catalog response only verifies that catalog access worked. It does not confirm sufficient balance, a model's current price, or successful inference. Review the current account pricing and select an enabled model before the next step.
+
+**The next command sends one generation request and may incur a charge.** It has no automatic retries. A timeout stops the local wait; it does not guarantee cancellation or prevent billing.
+
+```bash
+read -r -p "Available model ID: " EARTH_MODEL
+export EARTH_MODEL
+python3 - <<'PY' | curl --silent --show-error --fail-with-body \
+  --connect-timeout 10 --max-time 120 \
+  https://api.earth.icu/v1/chat/completions \
+  -H "Authorization: Bearer $EARTH_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
+import json
+import os
+
+print(json.dumps({
+    "model": os.environ["EARTH_MODEL"],
+    "messages": [{"role": "user", "content": "Reply with one short greeting."}],
+    "stream": False,
+}))
+PY
+unset EARTH_API_KEY EARTH_MODEL
+
+```
+
+Roamline needs a non-empty string at `choices[0].message.content`. If this direct request succeeds but the app fails, check the deployed environment and the full `OPENAI_BASE_URL` value above.
+
+| Direct request result | What it tells you |
+| --- | --- |
+| DNS or TLS failure | The API connection has not reached a usable HTTP response. Check the hostname and migration status. |
+| HTML error or browser challenge, including HTTP 403 | The request may have been blocked before the API handled it. This is not proof of a bad key or an unavailable model. |
+| JSON authentication error | Check the Earth API key and account access. Do not use an Ogin login token or Roamline's `APP_ACCESS_KEY`. |
+| Model-access or balance error | Follow the returned error and check your account's enabled models and balance. |
+| HTTP 429 or a temporary upstream error | Respect any `Retry-After` response; avoid rapid retries. |
+| HTTP 200 with unexpected JSON | HTTP success alone does not establish compatibility; inspect the Chat Completions response shape. |
+
+These checks use only the planned Earth API host. They do not change a running deployment or fall back to another provider. Remove keys and personal request content before sharing diagnostics.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
