@@ -128,6 +128,16 @@ Roamline needs a non-empty string at `choices[0].message.content`. If this direc
 
 These checks use only the planned Earth API host. They do not change a running deployment or fall back to another provider. Remove keys and personal request content before sharing diagnostics.
 
+### Node.js 22 example
+
+A dependency-free [Node.js example](examples/earth-api-node.mjs) is also available. By default it only requests the authenticated model catalog. It sends one non-streaming Chat Completions request only when `EARTH_RUN_GENERATION=1` and `EARTH_MODEL` are both set.
+
+```bash
+node docs/examples/earth-api-node.mjs --help
+```
+
+The example validates the selected model against the current catalog, follows no redirects, implements no automatic retries, uses timeouts, and never prints the API key. Listing models is not a generation request; confirm applicable account policies and current pricing before use.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
