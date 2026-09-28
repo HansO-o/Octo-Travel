@@ -8,6 +8,8 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 Want to use a configurable AI backend with this travel planner? See [Connect Roamline to Earth API](docs/earth-api.md) for the server-side endpoint and key configuration, supported request format, and troubleshooting. Earth API is a maintainer-operated API relay; the guide currently documents the planned `https://api.earth.icu/v1` domain migration as a preview.
 
+Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). The specification documents request shapes and does not guarantee migration status, enabled models, or pricing.
+
 ## 独立边界
 
 - 运行形态：Cloudflare Pages 静态资源 + Pages Functions（Workers runtime）。
