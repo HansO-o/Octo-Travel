@@ -1,0 +1,69 @@
+name: Earth API integration feedback
+description: Report an integration issue or request a client example for the Earth API launch preview.
+title: "[Earth API] "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing the Earth API integration preview. This public form is maintained by the Earth API operator.
+
+        Do not include API keys, account tokens, billing details, private prompts, or unredacted request/response headers. Confirm current model availability and pricing on the service before sending a billable request.
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: What do you need?
+      options:
+        - Help connecting an existing client
+        - A new client or framework example
+        - Documentation correction
+        - Compatibility question
+        - Error-message feedback
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Client, SDK, or framework
+      description: Include the version when known.
+      placeholder: "Example: curl 8.x, openai-python 2.x, or a named application"
+    validations:
+      required: true
+  - type: dropdown
+    id: endpoint
+    attributes:
+      label: Endpoint format
+      options:
+        - Chat Completions
+        - Responses
+        - Model discovery
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal and expected result
+      description: Explain the smallest integration you want to complete.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual result or requested example
+      description: Redact secrets and personal data. Include only the minimum error text needed to understand the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "Operating system, runtime, deployment platform, and region if relevant"
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed API keys, account tokens, billing details, private prompts, and personal data.
+          required: true
