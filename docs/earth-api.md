@@ -148,4 +148,10 @@ Roamline's current `/api/chat` route checks the request's `Origin`, which is not
 | `Unauthorized` from Roamline | Use the same-origin browser UI, or send your `APP_ACCESS_KEY` to Roamline's private route. |
 | `/health` succeeds but chat fails | Health is local to Roamline; check the upstream configuration separately. |
 
+## Share integration feedback
+
+If you are evaluating the launch preview, [open the Earth API integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). It asks for the client or framework, endpoint format, expected result, and a sanitized error or example request.
+
+This public form is maintained by the Earth API operator. Remove API keys, account tokens, billing details, private prompts, personal data, and unredacted headers before submitting. A report documents developer feedback; it does not confirm service availability, model access, pricing, or an official relationship with an upstream provider.
+
 Implementation references: [Pages Function](../functions/%5B%5Bpath%5D%5D.js), [Wrangler configuration](../wrangler.jsonc), and [project README](../README.md).
