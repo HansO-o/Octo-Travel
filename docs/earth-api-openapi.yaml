@@ -1,0 +1,289 @@
+openapi: 3.1.0
+info:
+  title: Earth API
+  version: 0.1.0-preview
+  summary: Preview specification for an independent AI API relay
+  description: |
+    Machine-readable integration preview for Earth API, an independent
+    third-party relay operated by Earth ICU. The planned public base URL is
+    https://api.earth.icu/v1.
+
+    This specification documents request shapes; it does not announce completed
+    migration, model availability, pricing, uptime, full OpenAI API equivalence,
+    or an official relationship with an upstream model provider. Confirm the
+    service status, enabled model IDs, account access, and current prices before
+    sending a generation request.
+
+    Compatibility is a documented subset. Do not rely on sampling, token-limit,
+    stored-response, previous-response, or background-request parameters without
+    validating them for the selected model and endpoint.
+  contact:
+    name: Earth API integration feedback
+    url: https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml
+  x-launch-status: preview
+servers:
+  - url: https://api.earth.icu/v1
+    description: Planned Earth API public host; verify availability before use
+security:
+  - bearerAuth: []
+tags:
+  - name: Models
+    description: Discover model identifiers available to the authenticated account.
+  - name: Chat Completions
+    description: OpenAI-style chat request and response format.
+  - name: Responses
+    description: OpenAI-style Responses request and event format.
+paths:
+  /models:
+    get:
+      operationId: listModels
+      summary: List available models
+      description: |
+        Returns model identifiers visible to the authenticated Earth API account.
+        A successful response does not confirm balance, price, or generation access.
+      tags: [Models]
+      responses:
+        "200":
+          description: Model list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelList"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        default:
+          $ref: "#/components/responses/ApiError"
+  /chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: Create a chat completion
+      description: |
+        Sends an OpenAI-style Chat Completions request. Set stream to false for
+        JSON or true for server-sent events. A request may incur charges.
+      tags: [Chat Completions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatCompletionRequest"
+            example:
+              model: YOUR_AVAILABLE_MODEL_ID
+              messages:
+                - role: user
+                  content: Reply with one short greeting.
+              stream: false
+      responses:
+        "200":
+          description: Completion JSON or event stream, selected by the request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletion"
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent Chat Completions chunks using choices[].delta.
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        default:
+          $ref: "#/components/responses/ApiError"
+  /responses:
+    post:
+      operationId: createResponse
+      summary: Create a response
+      description: |
+        Sends an OpenAI-style Responses request. Set stream to false for JSON or
+        true for named server-sent Responses events. A request may incur charges.
+      tags: [Responses]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseRequest"
+            example:
+              model: YOUR_AVAILABLE_MODEL_ID
+              input: Say hello in one sentence.
+              stream: false
+      responses:
+        "200":
+          description: Response JSON or named event stream, selected by the request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseObject"
+            text/event-stream:
+              schema:
+                type: string
+                description: Named server-sent Responses events.
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        default:
+          $ref: "#/components/responses/ApiError"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Earth API key
+      description: |
+        Use an Earth API model-access key. Do not use an Ogin login token,
+        an upstream-provider key, or an application's separate access key.
+  responses:
+    AuthenticationError:
+      description: Missing or invalid Earth API model-access key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    ApiError:
+      description: API, account, model, balance, rate-limit, or upstream error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+  schemas:
+    Model:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          examples: [model]
+        created:
+          type: integer
+        owned_by:
+          type: string
+      additionalProperties: true
+    ModelList:
+      type: object
+      required: [data]
+      properties:
+        object:
+          type: string
+          examples: [list]
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Model"
+      additionalProperties: true
+    ChatMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [system, developer, user, assistant, tool]
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+      additionalProperties: true
+    ChatCompletionRequest:
+      type: object
+      required: [model, messages]
+      properties:
+        model:
+          type: string
+          description: Select an ID returned by GET /models for this account.
+        messages:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+        stream:
+          type: boolean
+          default: false
+        stream_options:
+          type: object
+          properties:
+            include_usage:
+              type: boolean
+          additionalProperties: true
+        tools:
+          type: array
+          description: Availability varies by model; the application executes custom tools.
+          items:
+            type: object
+            additionalProperties: true
+      additionalProperties: true
+    ChatCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        usage:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    ResponseRequest:
+      type: object
+      required: [model, input]
+      properties:
+        model:
+          type: string
+          description: Select an ID returned by GET /models for this account.
+        input:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+        stream:
+          type: boolean
+          default: false
+        tools:
+          type: array
+          description: Availability varies by model; the application executes custom tools.
+          items:
+            type: object
+            additionalProperties: true
+      additionalProperties: true
+    ResponseObject:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        model:
+          type: string
+        output:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        usage:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            param: {}
+            code: {}
+          additionalProperties: true
+      additionalProperties: true
