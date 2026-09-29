@@ -8,10 +8,12 @@ function printUsage() {
   console.log(`Usage:
   EARTH_API_KEY=... node earth-api-openai-sdk.mjs
   EARTH_API_KEY=... node earth-api-openai-sdk.mjs --generate --model MODEL_ID
+  EARTH_API_KEY=... node earth-api-openai-sdk.mjs --generate --api responses --model MODEL_ID
 
 Options:
-  --generate        Send one Chat Completions request. Without this flag, the
-                    script only lists models and does not generate text.
+  --generate        Send one generation request. Without this flag, the script
+                    only lists models and does not generate text.
+  --api INTERFACE   Generation interface: chat or responses (default: chat).
   --model MODEL_ID  Model ID returned by the model-list request.
   --help            Show this help.
 
@@ -39,18 +41,25 @@ if (args.includes('--help')) {
   process.exit(0);
 }
 
-const allowedArgs = new Set(['--generate', '--model']);
+const allowedArgs = new Set(['--generate', '--api', '--model']);
 for (let index = 0; index < args.length; index += 1) {
   const arg = args[index];
   if (!allowedArgs.has(arg)) {
     throw new Error(`Unknown option: ${arg}`);
   }
-  if (arg === '--model') index += 1;
+  if (arg === '--api' || arg === '--model') index += 1;
 }
 
 const generate = args.includes('--generate');
+const api = valueAfter(args, '--api') ?? 'chat';
 const requestedModel = valueAfter(args, '--model');
 
+if (!['chat', 'responses'].includes(api)) {
+  throw new Error('--api must be either chat or responses.');
+}
+if (args.includes('--api') && !generate) {
+  throw new Error('--api is only used together with --generate.');
+}
 if (requestedModel && !generate) {
   throw new Error('--model is only used together with --generate.');
 }
@@ -98,18 +107,30 @@ try {
   const timer = setTimeout(() => controller.abort(), 120_000);
 
   try {
-    const completion = await client.chat.completions.create(
-      {
-        model: requestedModel,
-        messages: [{ role: 'user', content: 'Reply with one short greeting.' }],
-        stream: false,
-      },
-      { signal: controller.signal },
-    );
-
-    const text = completion.choices?.[0]?.message?.content;
-    console.log('\nResponse:');
-    console.log(text || '(empty response)');
+    if (api === 'responses') {
+      const response = await client.responses.create(
+        {
+          model: requestedModel,
+          input: 'Reply with one short greeting.',
+          stream: false,
+        },
+        { signal: controller.signal },
+      );
+      console.log('\nResponses API output:');
+      console.log(response.output_text || '(empty response)');
+    } else {
+      const completion = await client.chat.completions.create(
+        {
+          model: requestedModel,
+          messages: [{ role: 'user', content: 'Reply with one short greeting.' }],
+          stream: false,
+        },
+        { signal: controller.signal },
+      );
+      const text = completion.choices?.[0]?.message?.content;
+      console.log('\nChat Completions output:');
+      console.log(text || '(empty response)');
+    }
   } finally {
     clearTimeout(timer);
   }
