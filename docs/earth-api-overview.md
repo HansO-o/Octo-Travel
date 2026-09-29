@@ -7,6 +7,7 @@
 ## What developers can review now
 
 - Request shapes for model discovery, Chat Completions, and Responses.
+- A machine-readable [service metadata manifest](earth-api-service.json) with canonical URLs, observed launch status, interface paths, resources, safety checks, and limitations.
 - A machine-readable [OpenAPI 3.1 preview](earth-api-openapi.yaml).
 - An importable [Postman collection](earth-api-postman-collection.json).
 - Safe examples for [Node.js](examples/earth-api-node.mjs), [JavaScript SDK](examples/earth-api-openai-sdk.mjs), [Python SDK](examples/earth_api_openai_sdk.py), [Go](examples/earth-api-go.go), and [PHP](examples/earth-api-php.php).
@@ -27,4 +28,3 @@ The preview does not guarantee current model access, pricing, uptime, complete O
 ## Operator disclosure
 
 Earth API is operated by the maintainer publishing these materials. This overview and the linked preview resources were prepared with AI assistance and checked against the observed public launch state.
-
