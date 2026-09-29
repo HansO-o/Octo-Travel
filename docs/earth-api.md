@@ -158,6 +158,24 @@ python docs/examples/earth_api_openai_sdk.py --generate --model YOUR_AVAILABLE_M
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
 
+### OpenAI JavaScript SDK example
+
+A [Node.js 22+ SDK example](examples/earth-api-openai-sdk.mjs) configures the official `openai` package with Earth API's `baseURL`. It lists the authenticated account's current models by default and disables the SDK's automatic retries.
+
+```bash
+npm install openai
+node docs/examples/earth-api-openai-sdk.mjs --help
+node docs/examples/earth-api-openai-sdk.mjs
+```
+
+It sends one non-streaming Chat Completions request only when both `--generate` and a model returned by the current catalog are supplied:
+
+```bash
+node docs/examples/earth-api-openai-sdk.mjs --generate --model YOUR_AVAILABLE_MODEL_ID
+```
+
+A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
