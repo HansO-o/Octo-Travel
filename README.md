@@ -4,9 +4,11 @@ Roamline 是一个可独立复制、安装、构建和部署的 Cloudflare Pages
 静态前端负责行程编辑，Pages Function 提供可选的 AI 行程助手。项目没有源码级
 Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
-## English integration guide
+## Earth API developer quickstart (launch preview)
 
-Want to use a configurable AI backend with this travel planner? See [Connect Roamline to Earth API](docs/earth-api.md) for the server-side endpoint and key configuration, supported request format, and troubleshooting. Earth API is a maintainer-operated API relay; the guide currently documents the planned `https://api.earth.icu/v1` domain migration as a preview.
+[Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI-style Responses and Chat Completions request formats. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. Public pricing and paid model access are still being configured; verify live availability before integration.
+
+Want to use a configurable AI backend with this travel planner? See [Connect Roamline to Earth API](docs/earth-api.md) for the server-side endpoint and key configuration.
 
 Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). The specification documents request shapes and does not guarantee migration status, enabled models, or pricing.
 
