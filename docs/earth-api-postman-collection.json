@@ -1,0 +1,136 @@
+{
+  "info": {
+    "_postman_id": "52aa5a7f-391c-4c26-b5f4-391a7d089e77",
+    "name": "Earth API — Launch Preview",
+    "description": "Importable request templates for the Earth API launch preview. Maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. At publication time, model availability and pricing were still being configured and paid model calls were not announced as open. Check the service before testing. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.earth.icu/v1",
+      "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "model",
+      "value": "YOUR_AVAILABLE_MODEL_ID",
+      "type": "string"
+    },
+    {
+      "key": "runGeneration",
+      "value": "NO",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 — List models (no generation)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/models",
+        "description": "Returns the model catalog available to the authenticated account. This does not submit a generation request and does not prove that the account has sufficient balance or that every returned model is ready for production use."
+      },
+      "response": []
+    },
+    {
+      "name": "2 — Chat Completions (manual opt-in; may charge)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.collectionVariables.get('runGeneration') !== 'YES') {",
+              "  throw new Error('Generation is disabled. Review pricing and availability, then set collection variable runGeneration to YES.');",
+              "}",
+              "const model = pm.collectionVariables.get('model');",
+              "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
+              "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Reply with one short greeting.\"\n    }\n  ],\n  \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/chat/completions",
+        "description": "Sends one non-streaming Chat Completions request and may incur a charge. The collection blocks this request until runGeneration is exactly YES and model is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+      },
+      "response": []
+    },
+    {
+      "name": "3 — Responses (manual opt-in; may charge)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.collectionVariables.get('runGeneration') !== 'YES') {",
+              "  throw new Error('Generation is disabled. Review pricing and availability, then set collection variable runGeneration to YES.');",
+              "}",
+              "const model = pm.collectionVariables.get('model');",
+              "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
+              "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"input\": \"Reply with one short greeting.\",\n  \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/responses",
+        "description": "Sends one non-streaming Responses request and may incur a charge. The collection blocks this request until runGeneration is exactly YES and model is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+      },
+      "response": []
+    }
+  ]
+}
