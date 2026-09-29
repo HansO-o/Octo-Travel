@@ -150,10 +150,16 @@ python docs/examples/earth_api_openai_sdk.py --help
 python docs/examples/earth_api_openai_sdk.py
 ```
 
-It sends one non-streaming Chat Completions request only when both `--generate` and a model returned by the current catalog are supplied:
+It sends one non-streaming generation request only when both `--generate` and a model returned by the current catalog are supplied. Chat Completions is the default interface:
 
 ```bash
 python docs/examples/earth_api_openai_sdk.py --generate --model YOUR_AVAILABLE_MODEL_ID
+```
+
+To exercise the Responses request shape instead, select it explicitly:
+
+```bash
+python docs/examples/earth_api_openai_sdk.py --generate --api responses --model YOUR_AVAILABLE_MODEL_ID
 ```
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
