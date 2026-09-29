@@ -9,6 +9,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 ## Documentation
 
 - [One-page developer overview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md): Concise launch status, preview scope, resources, safety checks, and operator disclosure.
+- [Machine-readable service metadata](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-service.json): Repository-hosted launch status, canonical URLs, interface paths, resources, safety checks, limitations, and disclosures.
 - [Integration guide](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md): Launch-preview setup, direct connectivity checks, compatibility notes, security guidance, and troubleshooting.
 - [OpenAPI 3.1 preview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml): Machine-readable request shapes for model discovery, Chat Completions, and Responses.
 - [Postman collection](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json): Importable requests with generation disabled until the user explicitly opts in.
