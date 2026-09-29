@@ -10,7 +10,7 @@ Postman preview: [import the Earth API collection](earth-api-postman-collection.
 
 AI-agent index: [repository-scoped `docs/llms.txt`](llms.txt) provides a compact map to these preview resources. It is not deployed at the Earth API domain root and does not change the live launch status.
 
-> **Migration preview — 29 September 2026 (Asia/Shanghai):** The Earth API domain is scheduled to become the public endpoint during the morning migration. The examples below use the intended address, `https://api.earth.icu/v1`. Confirm that the domain, your account, and your selected model are available before switching a running deployment. This guide does not announce a completed migration or guarantee current model availability or pricing.
+> **Launch preview — checked 29 September 2026 (Asia/Shanghai):** The public Earth API page now documents `https://api.earth.icu/v1` and presents an Ogin login/registration link, but public pricing is still empty and the page says paid model calls are not yet open. The examples below use the documented address. Verify your account, the current model catalog, and pricing before switching a running deployment. This guide does not claim general paid availability or guarantee model access.
 
 ## 1. Set the endpoint and model
 
@@ -72,7 +72,7 @@ The browser sends messages and the current itinerary to Roamline's `/api/chat`. 
 
 ## 4. Check Earth API directly before redeploying
 
-Use these checks after the migration is confirmed and you have an Earth API key. They isolate the upstream connection from Roamline's configuration. These are request templates, not a report of a successful live inference test.
+Use these checks only after your Earth API account can obtain a key and the model catalog is available to it. They isolate the upstream connection from Roamline's configuration. These are request templates, not a report of a successful live inference test.
 
 In Bash, enter the key interactively so it is not included in the command you type:
 
