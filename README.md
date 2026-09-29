@@ -10,6 +10,8 @@ Want to use a configurable AI backend with this travel planner? See [Connect Roa
 
 Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). The specification documents request shapes and does not guarantee migration status, enabled models, or pricing.
 
+Developers can also import the [Earth API Postman launch-preview collection](docs/earth-api-postman-collection.json). It defaults to model discovery and blocks generation until the user explicitly opts in and selects a current model.
+
 ## 独立边界
 
 - 运行形态：Cloudflare Pages 静态资源 + Pages Functions（Workers runtime）。
