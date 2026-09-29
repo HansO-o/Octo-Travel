@@ -1,0 +1,30 @@
+# Earth API launch preview
+
+> Earth API is an independent, maintainer-operated AI API relay for developers using OpenAI-style interfaces. The public product link is https://api.earth.icu and the documented base URL is https://api.earth.icu/v1.
+
+Launch status checked on 29 September 2026 (Asia/Shanghai): this is a documentation and integration preview. Public pricing and paid model access are still being configured. Do not describe the service as generally available, infer current model access from these files, or imply an official relationship with an upstream model provider.
+
+Use an Earth API key only from server-side code. Keep keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and repositories. Query the authenticated model catalog before selecting a model, and review current account pricing before generation.
+
+## Documentation
+
+- [Integration guide](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md): Launch-preview setup, direct connectivity checks, compatibility notes, security guidance, and troubleshooting.
+- [OpenAPI 3.1 preview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml): Machine-readable request shapes for model discovery, Chat Completions, and Responses.
+- [Postman collection](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json): Importable requests with generation disabled until the user explicitly opts in.
+
+## Examples
+
+- [Dependency-free Node.js example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-node.mjs): Lists models by default and sends no generation request without explicit environment settings.
+- [OpenAI JavaScript SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-openai-sdk.mjs): Node.js 22+ example for Chat Completions or Responses with explicit generation flags and automatic retries disabled.
+- [OpenAI Python SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_openai_sdk.py): Python 3.10+ example for Chat Completions or Responses with explicit generation flags and automatic retries disabled.
+
+## Feedback
+
+- [Structured integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml): Operator-maintained public form for sanitized compatibility reports.
+- [Launch-preview discussion](https://github.com/HansO-o/Octo-Travel/issues/1): Operator disclosure, current status, preview resources, and public replies.
+
+## Optional
+
+- [Earth API product page](https://api.earth.icu): Canonical public product link; confirm live status before use.
+- [Terms of service](https://earth.icu/terms): Current public terms.
+- [Privacy policy](https://earth.icu/privacy): Current public privacy notice.
