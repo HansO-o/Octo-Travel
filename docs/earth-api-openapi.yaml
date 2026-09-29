@@ -1,15 +1,15 @@
 openapi: 3.1.0
 info:
   title: Earth API
-  version: 0.1.0-preview
+  version: 0.1.1-preview
   summary: Preview specification for an independent AI API relay
   description: |
     Machine-readable integration preview for Earth API, an independent
-    third-party relay operated by Earth ICU. The planned public base URL is
+    third-party relay operated by Earth ICU. The documented public base URL is
     https://api.earth.icu/v1.
 
-    This specification documents request shapes; it does not announce completed
-    migration, model availability, pricing, uptime, full OpenAI API equivalence,
+    This specification documents request shapes; it does not announce general
+    availability, model access, pricing, uptime, full OpenAI API equivalence,
     or an official relationship with an upstream model provider. Confirm the
     service status, enabled model IDs, account access, and current prices before
     sending a generation request.
@@ -23,7 +23,7 @@ info:
   x-launch-status: preview
 servers:
   - url: https://api.earth.icu/v1
-    description: Planned Earth API public host; verify availability before use
+    description: Documented Earth API public host; verify account, models, and pricing before use
 security:
   - bearerAuth: []
 tags:
