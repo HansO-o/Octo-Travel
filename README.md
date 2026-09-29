@@ -8,6 +8,17 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI-style Responses and Chat Completions request formats. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. Public pricing and paid model access are still being configured; verify live availability before integration.
 
+Current public status, checked 29 September 2026 (Asia/Shanghai):
+
+| Item | Verified public state |
+| --- | --- |
+| Product page | Reachable at the canonical Earth API link and documents the `/v1` base URL. |
+| Account entry | An Ogin login/registration link is present; this check did not complete an account signup. |
+| Models and pricing | The public price table has no model rows, and the page says paid model calls are not yet open. |
+| Preview scope | Documentation and request-shape preview only; no paid inference or general-availability claim. |
+
+For sanitized setup or compatibility feedback, use the [operator-maintained integration form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). Do not include API keys, account tokens, billing details, private prompts, personal data, or production secrets.
+
 Want to use a configurable AI backend with this travel planner? See [Connect Roamline to Earth API](docs/earth-api.md) for the server-side endpoint and key configuration.
 
 Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). The specification documents request shapes and does not guarantee migration status, enabled models, or pricing.
