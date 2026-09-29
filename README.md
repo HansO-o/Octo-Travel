@@ -12,7 +12,7 @@ Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.ya
 
 Developers can also import the [Earth API Postman launch-preview collection](docs/earth-api-postman-collection.json). It defaults to model discovery and blocks generation until the user explicitly opts in and selects a current model.
 
-The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and only sends a generation request after an explicit `--generate --model` opt-in.
+The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and only sends a Chat Completions or Responses request after an explicit `--generate --model` opt-in.
 
 ## 独立边界
 
