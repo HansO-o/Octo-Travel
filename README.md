@@ -6,6 +6,8 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 ## Earth API developer quickstart (launch preview)
 
+Start with the [one-page Earth API developer overview](docs/earth-api-overview.md) for the current launch status, supported preview resources, safety checks, and operator disclosure.
+
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI-style Responses and Chat Completions request formats. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. Public pricing and paid model access are still being configured; verify live availability before integration.
 
 Current public status, checked 29 September 2026 (Asia/Shanghai):
