@@ -168,10 +168,16 @@ node docs/examples/earth-api-openai-sdk.mjs --help
 node docs/examples/earth-api-openai-sdk.mjs
 ```
 
-It sends one non-streaming Chat Completions request only when both `--generate` and a model returned by the current catalog are supplied:
+It sends one non-streaming generation request only when both `--generate` and a model returned by the current catalog are supplied. Chat Completions is the default interface:
 
 ```bash
 node docs/examples/earth-api-openai-sdk.mjs --generate --model YOUR_AVAILABLE_MODEL_ID
+```
+
+To exercise the Responses request shape instead, select it explicitly:
+
+```bash
+node docs/examples/earth-api-openai-sdk.mjs --generate --api responses --model YOUR_AVAILABLE_MODEL_ID
 ```
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
