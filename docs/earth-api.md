@@ -190,6 +190,23 @@ node docs/examples/earth-api-openai-sdk.mjs --generate --api responses --model Y
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
 
+### Go standard-library example
+
+A [Go standard-library example](examples/earth-api-go.go) uses only Go's built-in HTTP and JSON packages. It lists the authenticated model catalog by default and performs no automatic retries.
+
+```bash
+export EARTH_API_KEY='YOUR_EARTH_API_KEY'
+go run docs/examples/earth-api-go.go
+```
+
+It sends one non-streaming generation request only when `-generate` and a model returned by the current catalog are both supplied. Chat Completions is the default interface:
+
+```bash
+go run docs/examples/earth-api-go.go -generate -model YOUR_AVAILABLE_MODEL_ID
+```
+
+Select Responses explicitly with `-api responses`. A generation request may incur a charge; the example never prints the key and warns that a local timeout does not guarantee server-side cancellation.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
