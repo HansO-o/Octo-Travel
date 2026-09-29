@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.1",
+  "name": "Earth API",
+  "description": "Independent, maintainer-operated AI API relay for developers using OpenAI-style request formats.",
+  "canonical_url": "https://api.earth.icu",
+  "base_url": "https://api.earth.icu/v1",
+  "launch_status": "preview",
+  "observed_public_state": {
+    "checked_at": "2026-09-29T23:43:27+08:00",
+    "base_url_documented": true,
+    "account_entry_present": true,
+    "public_pricing_rows_present": false,
+    "paid_model_calls_open": false,
+    "live_verification_required": true
+  },
+  "interfaces": [
+    {
+      "name": "Model discovery",
+      "method": "GET",
+      "path": "/models"
+    },
+    {
+      "name": "Chat Completions",
+      "method": "POST",
+      "path": "/chat/completions"
+    },
+    {
+      "name": "Responses",
+      "method": "POST",
+      "path": "/responses"
+    }
+  ],
+  "documentation": {
+    "overview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md",
+    "integration_guide": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md",
+    "openapi_preview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml",
+    "postman_collection": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json",
+    "llms_index": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/llms.txt",
+    "feedback": "https://github.com/HansO-o/Octo-Travel/issues/1"
+  },
+  "usage_checks": [
+    "Confirm current account access and API-key creation.",
+    "Query the authenticated model catalog before choosing a model.",
+    "Review the current account price before generation.",
+    "Start with a minimal request and disable automatic retries.",
+    "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
+  ],
+  "limitations": [
+    "This file is a repository-hosted integration preview, not a general-availability announcement.",
+    "It does not guarantee current model access, pricing, uptime, complete OpenAI API equivalence, or data-retention behavior.",
+    "Earth API is independent and does not claim an official relationship with an upstream model provider."
+  ],
+  "operator_disclosure": "Published by the Earth API operator.",
+  "content_disclosure": "Prepared with AI assistance and reviewed against the observed public launch state."
+}
