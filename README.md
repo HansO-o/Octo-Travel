@@ -31,6 +31,8 @@ The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Pyth
 
 The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags for Chat Completions or Responses.
 
+The [PHP 8.2 dependency-free example](docs/examples/earth-api-php.php) lists the authenticated model catalog by default and requires explicit `--generate --model=...` flags before it sends one Chat Completions or Responses request.
+
 AI coding tools can use the repository-root [Earth API `llms.txt` preview index](llms.txt) to find the guide, specification, examples, and feedback links. It is repository-scoped, not a deployment at `api.earth.icu/llms.txt` or a general-availability claim.
 
 ## 独立边界
