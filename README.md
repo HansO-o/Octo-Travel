@@ -12,7 +12,9 @@ Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.ya
 
 Developers can also import the [Earth API Postman launch-preview collection](docs/earth-api-postman-collection.json). It defaults to model discovery and blocks generation until the user explicitly opts in and selects a current model.
 
-The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and only sends a Chat Completions or Responses request after an explicit `--generate --model` opt-in.\n\nThe [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Python 3.10+, lists models by default, disables automatic retries, and applies the same explicit opt-in to Chat Completions and Responses.
+The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and only sends a Chat Completions or Responses request after an explicit `--generate --model` opt-in.
+
+The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Python 3.10+, lists models by default, disables automatic retries, and applies the same explicit opt-in to Chat Completions and Responses.
 
 AI coding tools can use the repository-root [Earth API `llms.txt` preview index](llms.txt) to find the guide, specification, examples, and feedback links. It is repository-scoped, not a deployment at `api.earth.icu/llms.txt` or a general-availability claim.
 
