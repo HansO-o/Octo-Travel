@@ -138,6 +138,24 @@ node docs/examples/earth-api-node.mjs --help
 
 The example validates the selected model against the current catalog, follows no redirects, implements no automatic retries, uses timeouts, and never prints the API key. Listing models is not a generation request; confirm applicable account policies and current pricing before use.
 
+### OpenAI Python SDK example
+
+A [Python 3.10+ example](examples/earth_api_openai_sdk.py) shows how to set the SDK's `base_url` to Earth API. It lists the authenticated account's current models by default and disables the SDK's automatic retries.
+
+```bash
+python -m pip install "openai>=3,<4"
+python docs/examples/earth_api_openai_sdk.py --help
+python docs/examples/earth_api_openai_sdk.py
+```
+
+It sends one non-streaming Chat Completions request only when both `--generate` and a model returned by the current catalog are supplied:
+
+```bash
+python docs/examples/earth_api_openai_sdk.py --generate --model YOUR_AVAILABLE_MODEL_ID
+```
+
+A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
