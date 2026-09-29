@@ -6,6 +6,8 @@ This guide shows the configuration for **Earth API**, an API relay operated by t
 
 Machine-readable preview: [Earth API OpenAPI 3.1 specification](earth-api-openapi.yaml). It is an importable request-shape reference, not a live-availability or pricing guarantee.
 
+Postman preview: [import the Earth API collection](earth-api-postman-collection.json). It defaults to model discovery only. Generation requests are blocked until you explicitly set `runGeneration` to `YES` and choose a model returned by the current catalog; generation may incur charges.
+
 > **Migration preview — 29 September 2026 (Asia/Shanghai):** The Earth API domain is scheduled to become the public endpoint during the morning migration. The examples below use the intended address, `https://api.earth.icu/v1`. Confirm that the domain, your account, and your selected model are available before switching a running deployment. This guide does not announce a completed migration or guarantee current model availability or pricing.
 
 ## 1. Set the endpoint and model
