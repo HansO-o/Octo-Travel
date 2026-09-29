@@ -16,6 +16,8 @@ The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses
 
 The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Python 3.10+, lists models by default, disables automatic retries, and applies the same explicit opt-in to Chat Completions and Responses.
 
+The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags for Chat Completions or Responses.
+
 AI coding tools can use the repository-root [Earth API `llms.txt` preview index](llms.txt) to find the guide, specification, examples, and feedback links. It is repository-scoped, not a deployment at `api.earth.icu/llms.txt` or a general-availability claim.
 
 ## 独立边界
