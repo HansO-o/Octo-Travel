@@ -14,13 +14,19 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "List Earth API models. Add --generate and --model to send exactly "
-            "one non-streaming Chat Completions request."
+            "one non-streaming generation request."
         )
     )
     parser.add_argument(
         "--generate",
         action="store_true",
         help="send one generation request after listing models",
+    )
+    parser.add_argument(
+        "--api",
+        choices=("chat", "responses"),
+        default="chat",
+        help="generation interface to use (default: chat)",
     )
     parser.add_argument(
         "--model",
@@ -82,17 +88,32 @@ def main() -> int:
             "\nSending one request. It may incur a charge; a local timeout does not "
             "guarantee cancellation."
         )
-        completion = client.with_options(timeout=120.0).chat.completions.create(
-            model=args.model,
-            messages=[
-                {"role": "user", "content": "Reply with one short greeting."}
-            ],
-            stream=False,
-        )
-        content = completion.choices[0].message.content
+        if args.api == "responses":
+            response = client.with_options(timeout=120.0).responses.create(
+                model=args.model,
+                input="Reply with one short greeting.",
+                stream=False,
+            )
+            content = response.output_text
+            interface_name = "Responses"
+        else:
+            completion = client.with_options(timeout=120.0).chat.completions.create(
+                model=args.model,
+                messages=[
+                    {"role": "user", "content": "Reply with one short greeting."}
+                ],
+                stream=False,
+            )
+            content = completion.choices[0].message.content
+            interface_name = "Chat Completions"
+
         if not content:
-            print("The response did not contain text content.", file=sys.stderr)
+            print(
+                f"The {interface_name} response did not contain text content.",
+                file=sys.stderr,
+            )
             return 1
+        print(f"{interface_name} output:")
         print(content)
         return 0
     except OpenAIError as error:
