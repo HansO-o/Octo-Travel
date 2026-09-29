@@ -207,6 +207,26 @@ go run docs/examples/earth-api-go.go -generate -model YOUR_AVAILABLE_MODEL_ID
 
 Select Responses explicitly with `-api responses`. A generation request may incur a charge; the example never prints the key and warns that a local timeout does not guarantee server-side cancellation.
 
+### PHP 8.2 dependency-free example
+
+A [PHP 8.2+ CLI example](examples/earth-api-php.php) uses PHP's built-in HTTPS stream support, lists the authenticated model catalog by default, follows no redirects, and performs no automatic retries.
+
+```bash
+read -r -s -p "Earth API key: " EARTH_API_KEY
+export EARTH_API_KEY
+printf '\\n'
+php docs/examples/earth-api-php.php
+```
+
+It sends one non-streaming generation request only when `--generate` and a model returned by the current catalog are both supplied:
+
+```bash
+php docs/examples/earth-api-php.php --generate --model=YOUR_AVAILABLE_MODEL_ID
+php docs/examples/earth-api-php.php --generate --api=responses --model=YOUR_AVAILABLE_MODEL_ID
+```
+
+Generation may incur a charge. The script does not print the API key, has no automatic retries, and does not claim that a local timeout cancels server-side work. PHP must allow HTTPS URL streams in the runtime configuration.
+
 ## What this integration supports
 
 This version uses **non-streaming text Chat Completions**. The function sends `model`, `messages`, and `stream: false`, then expects a non-empty string at `choices[0].message.content`.
