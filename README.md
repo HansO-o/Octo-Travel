@@ -34,6 +34,8 @@ The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Pyth
 
 The [Anthropic Messages Python example](docs/examples/earth_api_anthropic_messages.py) uses only the Python 3.10+ standard library. It lists models by default and requires explicit `--generate --model` flags before sending one Messages request.
 
+The [Anthropic Messages Node.js example](docs/examples/earth-api-anthropic-messages.mjs) uses built-in Node.js 22+ `fetch`, lists models by default, and applies the same explicit opt-in before sending one Messages request.
+
 The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags for Chat Completions or Responses.
 
 The [PHP 8.2 dependency-free example](docs/examples/earth-api-php.php) lists the authenticated model catalog by default and requires explicit `--generate --model=...` flags before it sends one Chat Completions or Responses request.
