@@ -2,7 +2,7 @@
 
 > Earth API is an independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style interfaces. The public product link is https://api.earth.icu and the documented base URL is https://api.earth.icu/v1.
 
-Launch status checked on 30 September 2026 at 12:43 (Asia/Shanghai): the English product page, official developer documentation, and console entry are live. The public Models & pricing page still says the catalog is being prepared and publishes no model or rate rows. Treat this as an integration preview until live model access, account access, and current rates are verified. Do not imply an official relationship with an upstream model provider.
+Launch status checked on 30 September 2026 at 15:37 (Asia/Shanghai): the English product page, official developer documentation, console entry, and Models & pricing route are live. In the public browser check, the pricing route remained on `Loading current model prices…` and exposed no model or rate rows. Treat this as an integration preview until live model access, account access, and current rates are verified. Do not imply an official relationship with an upstream model provider.
 
 Use an Earth API key only from server-side code. Keep keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and repositories. Query the authenticated model catalog before selecting a model, and review current account pricing before generation.
 
@@ -10,7 +10,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 
 - [Product page](https://api.earth.icu): English landing page with additional language options.
 - [Official documentation](https://api.earth.icu/docs): Quickstart, OpenAI Responses and Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
-- [Models & pricing](https://api.earth.icu/models): Public catalog page; no model or rate rows were published at the latest check.
+- [Models & pricing](https://api.earth.icu/models): Public pricing route; the latest browser check remained on its loading state and exposed no model or rate rows.
 - [Console](https://api.earth.icu/console): OGS-backed workspace entry; account creation was not completed during the public check.
 
 ## Repository documentation
@@ -26,6 +26,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 - [Dependency-free Node.js example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-node.mjs): Lists models by default and sends no generation request without explicit environment settings.
 - [OpenAI JavaScript SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-openai-sdk.mjs): Node.js 22+ example for Chat Completions or Responses with explicit generation flags and automatic retries disabled.
 - [OpenAI Python SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_openai_sdk.py): Python 3.10+ example for Chat Completions or Responses with explicit generation flags and automatic retries disabled.
+- [Anthropic Messages Python example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py): Dependency-free Python 3.10+ client that lists models by default and requires explicit generation flags for one Messages request.
 - [Go standard-library example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-go.go): Dependency-free Go client that lists models by default and requires explicit flags for one Chat Completions or Responses request.
 - [PHP 8.2 example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-php.php): Dependency-free CLI client that lists models by default and requires explicit flags for one Chat Completions or Responses request.
 
