@@ -6,7 +6,7 @@
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "preview",
   "observed_public_state": {
-    "checked_at": "2026-09-30T17:33:00+08:00",
+    "checked_at": "2026-09-30T18:38:00+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -51,6 +51,7 @@
   },
   "repository_resources": {
     "overview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md",
+    "production_readiness": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-production-readiness.md",
     "integration_guide": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md",
     "openapi_preview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml",
     "postman_collection": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json",
