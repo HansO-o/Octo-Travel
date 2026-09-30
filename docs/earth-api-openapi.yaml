@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Earth API
-  version: 0.2.0-preview
-  summary: Preview specification for an independent AI API relay
+  version: 1.0.0
+  summary: Live API specification for an independent AI API relay
   description: |
-    Machine-readable integration preview for Earth API, an independent
+    Machine-readable integration reference for Earth API, an independent
     third-party relay operated by Earth ICU. The documented public base URL is
     https://api.earth.icu/v1.
 
@@ -20,7 +20,7 @@ info:
   contact:
     name: Earth API integration feedback
     url: https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml
-  x-launch-status: preview
+  x-launch-status: live
 servers:
   - url: https://api.earth.icu/v1
     description: Documented Earth API public host; verify account, models, and pricing before use
