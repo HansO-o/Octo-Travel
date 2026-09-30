@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "52aa5a7f-391c-4c26-b5f4-391a7d089e77",
     "name": "Earth API — Launch Preview",
-    "description": "Importable request templates for the Earth API launch preview. Maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. At publication time, model availability and pricing were still being configured and paid model calls were not announced as open. Check the service before testing. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
+    "description": "Importable request templates for the Earth API launch preview. Maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. At the latest public check, the Models & pricing route remained on its loading state and exposed no model or rate rows. Verify account access, the authenticated catalog, and current pricing before testing. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -34,6 +34,16 @@
     {
       "key": "runGeneration",
       "value": "NO",
+      "type": "string"
+    },
+    {
+      "key": "anthropicModel",
+      "value": "YOUR_AVAILABLE_ANTHROPIC_MODEL_ID",
+      "type": "string"
+    },
+    {
+      "key": "anthropicVersion",
+      "value": "2023-06-01",
       "type": "string"
     }
   ],
@@ -129,6 +139,61 @@
         },
         "url": "{{baseUrl}}/responses",
         "description": "Sends one non-streaming Responses request and may incur a charge. The collection blocks this request until runGeneration is exactly YES and model is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+      },
+      "response": []
+    },
+    {
+      "name": "4 — Anthropic Messages (manual opt-in; may charge)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.collectionVariables.get('runGeneration') !== 'YES') {",
+              "  throw new Error('Generation is disabled. Review pricing and availability, then set collection variable runGeneration to YES.');",
+              "}",
+              "const model = pm.collectionVariables.get('anthropicModel');",
+              "if (!model || model === 'YOUR_AVAILABLE_ANTHROPIC_MODEL_ID') {",
+              "  throw new Error('Choose an Anthropic-compatible model returned by the current catalog and set the collection variable anthropicModel.');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "anthropic-version",
+            "value": "{{anthropicVersion}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"{{anthropicModel}}\",\n  \"max_tokens\": 256,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Reply with one short greeting.\"\n    }\n  ],\n  \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/messages",
+        "description": "Sends one non-streaming Anthropic Messages request and may incur a charge. This request overrides the collection bearer auth and uses x-api-key plus anthropic-version. It remains blocked until runGeneration is exactly YES and anthropicModel is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
       },
       "response": []
     }
