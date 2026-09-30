@@ -184,6 +184,24 @@ python docs/examples/earth_api_anthropic_messages.py \
 
 Generation may incur a charge. The example performs no automatic retries, refuses redirects, does not print the API key, and warns that a local timeout does not prove server-side cancellation.
 
+### Anthropic Messages Node.js example
+
+A dependency-free [Node.js 22+ Anthropic Messages example](examples/earth-api-anthropic-messages.mjs) uses built-in `fetch` with the documented `POST /v1/messages` endpoint. It first lists the authenticated catalog and sends no generation request by default.
+
+```bash
+node docs/examples/earth-api-anthropic-messages.mjs --help
+node docs/examples/earth-api-anthropic-messages.mjs
+```
+
+After reviewing current pricing, opt in to one non-streaming request with a model returned by the catalog:
+
+```bash
+node docs/examples/earth-api-anthropic-messages.mjs \
+  --generate --model YOUR_AVAILABLE_ANTHROPIC_MODEL_ID
+```
+
+Generation may incur a charge. The example performs no automatic retries, refuses redirects, does not print the API key, and warns that a local timeout does not prove server-side cancellation.
+
 ### OpenAI JavaScript SDK example
 
 A [Node.js 22+ SDK example](examples/earth-api-openai-sdk.mjs) configures the official `openai` package with Earth API's `baseURL`. It lists the authenticated account's current models by default and disables the SDK's automatic retries.
