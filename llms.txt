@@ -16,6 +16,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 ## Repository documentation
 
 - [One-page developer overview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md): Concise launch status, preview scope, resources, safety checks, and operator disclosure.
+- [OpenCode quickstart](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-opencode.md): Custom-provider configuration, secure key handling, model selection, compatibility notes, and troubleshooting.
 - [Production-readiness checklist](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-production-readiness.md): Go/no-go gates for account access, models, pricing, authentication, secrets, spending controls, compatibility, support evidence, and rollback.
 - [Compatibility snapshot](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-compatibility.md): Endpoint-by-endpoint launch validation, streaming and tool-call coverage, authentication mapping, and known parameter boundaries.
 - [Machine-readable service metadata](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-service.json): Repository-hosted launch status, canonical URLs, interface paths, resources, safety checks, limitations, and disclosures.
@@ -31,7 +32,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 - [Anthropic Messages Python example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py): Dependency-free Python 3.10+ client that lists models by default and requires explicit generation flags for one Messages request.
 - [Anthropic Messages Node.js example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-anthropic-messages.mjs): Dependency-free Node.js 22+ client that lists models by default and requires explicit generation flags for one Messages request.
 - [Go standard-library example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-go.go): Dependency-free Go client that lists models by default and requires explicit flags for one Chat Completions or Responses request.
-- [PHP 8.2 example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-php.php): Dependency-free CLI client that lists models by default and requires explicit flags for one Chat Completions or Responses request.
+- [PHP 8.2 example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-php.php): Dependency-free CLI client that lists the authenticated model catalog by default and requires explicit flags for one Chat Completions or Responses request.
 
 ## Feedback
 
