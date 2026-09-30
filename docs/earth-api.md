@@ -4,13 +4,13 @@ Roamline (Octo Travel) is a small, local-first travel planner with an optional A
 
 This guide shows the configuration for **Earth API**, an API relay operated by this project's maintainer.
 
-Machine-readable preview: [Earth API OpenAPI 3.1 specification](earth-api-openapi.yaml). It is an importable request-shape reference, not a live-availability or pricing guarantee.
+Machine-readable reference: [Earth API OpenAPI 3.1 specification](earth-api-openapi.yaml). It is an importable request-shape reference, not a live-availability or pricing guarantee.
 
-Postman preview: [import the Earth API collection](earth-api-postman-collection.json). It defaults to model discovery only. Generation requests are blocked until you explicitly set `runGeneration` to `YES` and choose a model returned by the current catalog; generation may incur charges.
+Postman collection: [import the Earth API collection](earth-api-postman-collection.json). It defaults to model discovery only. Generation requests are blocked until you explicitly set `runGeneration` to `YES` and choose a model returned by the current catalog; generation may incur charges.
 
-AI-agent index: [repository-scoped `docs/llms.txt`](llms.txt) provides a compact map to these preview resources. It is not deployed at the Earth API domain root and does not change the live launch status.
+AI-agent index: [repository-scoped `docs/llms.txt`](llms.txt) provides a compact map to these integration resources. It is not deployed at the Earth API domain root.
 
-> **Launch preview — checked 30 September 2026 at 15:37 (Asia/Shanghai):** The English product page, documentation, console entry, and Models & pricing route are live. In the public browser check, the pricing route remained on `Loading current model prices…` and exposed no model or rate rows. The examples below use the documented `https://api.earth.icu/v1` address. Verify your account, the authenticated model catalog, and current pricing before switching a running deployment. This guide does not claim general paid availability or guarantee model access.
+> **Live launch — verified 30 September 2026 at 22:27 (Asia/Shanghai):** The English product page, documentation, OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. Thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`, including JSON, SSE, native Messages, tool calls, errors, and final usage. The examples below use `https://api.earth.icu/v1`. Verify the current catalog, account access, balance, and pricing before production use; launch verification is not an uptime or capacity guarantee.
 
 ## 1. Set the endpoint and model
 
@@ -72,7 +72,7 @@ The browser sends messages and the current itinerary to Roamline's `/api/chat`. 
 
 ## 4. Check Earth API directly before redeploying
 
-Use these checks only after your Earth API account can obtain a key and the model catalog is available to it. They isolate the upstream connection from Roamline's configuration. These are request templates, not a report of a successful live inference test.
+Use these checks only after your Earth API account can obtain a key and the model catalog is available to it. They isolate the upstream connection from Roamline's configuration. These templates were live-validated during the launch check, but your account access, balance, model capacity, and current rates can differ.
 
 In Bash, enter the key interactively so it is not included in the command you type:
 
@@ -310,7 +310,7 @@ Keep the returned request ID and `Retry-After` value, if present. Respect the su
 
 ## Share integration feedback
 
-If you are evaluating the launch preview, [open the Earth API integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). It supports Chat Completions, Responses, Anthropic Messages, and model discovery. Include the client or SDK version, model ID, request time with timezone, HTTP status, error code or type, request ID and `Retry-After` value if supplied, streaming mode, retry behavior, and the expected result. Do not paste full headers.
+If you are integrating the live service, [open the Earth API integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). It supports Chat Completions, Responses, Anthropic Messages, and model discovery. Include the client or SDK version, model ID, request time with timezone, HTTP status, error code or type, request ID and `Retry-After` value if supplied, streaming mode, retry behavior, and the expected result. Do not paste full headers.
 
 This public form is maintained by the Earth API operator. Remove API keys, account tokens, billing details, private prompts, personal data, and unredacted headers before submitting. A report documents developer feedback; it does not confirm service availability, model access, pricing, or an official relationship with an upstream provider.
 
