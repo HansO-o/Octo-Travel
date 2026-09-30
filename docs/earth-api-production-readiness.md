@@ -12,6 +12,7 @@ This is an engineering checklist, not a security certification, legal opinion, s
 | --- | --- | --- |
 | Account | You can sign in, create an Earth API model-access key, and identify the account that will be billed. | Access depends on an unverified token, shared login, or unknown account. |
 | Models | `GET /v1/models` returns an expected model ID for the same authenticated account. | A model name comes only from documentation, an old screenshot, or another account. |
+| Inference | One minimal request succeeds and returns the response shape your client expects. | Only catalog access is verified, or generation returns an error, partial output, or an unexplained denial. |
 | Pricing | You have reviewed a current rate published for the selected model and understand the billed units. | The price is missing, still loading, inferred from an upstream provider, or copied from an old page. |
 | Request shape | A minimal request matches the documented endpoint and authentication scheme. | The client silently appends a different path, uses the wrong key header, or adds unsupported parameters. |
 | Spend controls | You have an explicit test budget, concurrency limit, timeout, and retry policy. | Retries are unlimited, traffic can fan out unexpectedly, or there is no spending stop. |
@@ -51,7 +52,7 @@ An Ogin login token, application-specific access key, upstream-provider key, and
 1. Query the authenticated model catalog. This is not a generation request.
 2. Select a model returned for the same account.
 3. Review its current account price.
-4. Set a small output limit.
+4. Use a documented output limit where supported, and verify that your selected endpoint/model enforces it. A token parameter is not an account spending cap.
 5. Disable automatic retries.
 6. Send one non-streaming request with non-sensitive test text.
 7. Record the UTC time, endpoint, model ID, HTTP status, request ID if supplied, and sanitized response shape.
@@ -66,7 +67,7 @@ Use the safe [Python](examples/earth_api_anthropic_messages.py), [Node.js](examp
 Define and test:
 
 - a maximum request body size and prompt length;
-- a per-request output-token limit;
+- a per-request output-token limit, with enforcement verified for the selected endpoint/model;
 - a concurrency limit;
 - a request timeout;
 - a retry policy that respects `Retry-After` and never retries non-idempotent work blindly;
@@ -75,6 +76,8 @@ Define and test:
 - log redaction for authorization headers, account tokens, prompts, and response content;
 - a kill switch that can disable generation without redeploying the client;
 - a rollback path to the previous configuration.
+
+A requested token limit or client timeout is not a verified hard spending stop. Configure spending controls separately and confirm their scope, especially with concurrent requests.
 
 Start with one internal caller. Increase traffic only after comparing expected usage with the account record.
 
@@ -103,6 +106,12 @@ Before reporting a problem, collect:
 - whether streaming, tools, or retries were enabled.
 
 Remove API keys, login tokens, billing details, private prompts, personal data, full authorization headers, and production secrets. Use the [structured integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml).
+
+### Interpret unavailable and rate-limit responses carefully
+
+A model appearing in the authenticated catalog does not prove that a generation request can be served. If an error reports `upstream_unavailable`, collect the request evidence rather than concluding that your client key is invalid or that a quota is exhausted. An HTTP 429 or `rate_limit_error` without a specific explanation does not identify which account, quota window, or request limit caused the rejection. Availability through a different client or channel does not establish this route's availability.
+
+Preserve a supplied `Retry-After` value and request ID. Respect a specified retry delay. If no delay is supplied, avoid immediate retry loops; review Usage and report one sanitized failed attempt through the feedback form. A new key, different endpoint, or repeated request is not a verified fix.
 
 ## 7. Recheck before each rollout
 
