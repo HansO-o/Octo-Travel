@@ -2,13 +2,14 @@
 
 [Earth API](https://api.earth.icu) is an independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats. The documented base URL is `https://api.earth.icu/v1`.
 
-> **Launch status — checked 30 September 2026 at 17:33 (Asia/Shanghai):** the English product page, official developer documentation, console entry, multilingual selector, and Models & pricing interface are live. The public pricing interface remained on `Loading current model prices…` and exposed no model or rate rows in this check. This remains an integration preview, not a general-availability announcement.
+> **Launch status — checked 30 September 2026 at 18:38 (Asia/Shanghai):** the English product page, official developer documentation, console entry, multilingual selector, and Models & pricing interface are live. The public pricing interface remained on `Loading current model prices…` and exposed no model or rate rows in this check. This remains an integration preview, not a general-availability announcement.
 
 ## What developers can review now
 
 - The official [English developer documentation](https://api.earth.icu/docs), including OpenAI Responses, Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
 - The public [Models & pricing page](https://api.earth.icu/models), which should be checked for published model IDs and rates before use.
 - Request shapes for model discovery, Chat Completions, Responses, and Anthropic Messages.
+- A [production-readiness checklist](earth-api-production-readiness.md) with concrete go/no-go gates for account access, models, pricing, secrets, spending controls, compatibility, support evidence, and rollback.
 - A machine-readable [service metadata manifest](earth-api-service.json) with canonical URLs, observed launch status, interface paths, resources, safety checks, and limitations.
 - A machine-readable [OpenAPI 3.1 preview](earth-api-openapi.yaml).
 - An importable [Postman collection](earth-api-postman-collection.json) with opt-in templates for Chat Completions, Responses, and Anthropic Messages.
