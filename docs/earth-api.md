@@ -302,9 +302,15 @@ Roamline's current `/api/chat` route checks the request's `Origin`, which is not
 | `Unauthorized` from Roamline | Use the same-origin browser UI, or send your `APP_ACCESS_KEY` to Roamline's private route. |
 | `/health` succeeds but chat fails | Health is local to Roamline; check the upstream configuration separately. |
 
+### Catalog access and generation errors
+
+Model discovery and inference are separate checks. A catalog entry is not proof that a generation request can be served. If the error contains `upstream_unavailable`, it does not by itself prove an invalid key or exhausted quota. If an HTTP 429 contains only `rate_limit_error` or a generic message, the exact limiting condition is still unknown.
+
+Keep the returned request ID and `Retry-After` value, if present. Respect the supplied delay, review Usage before resending, and disable immediate automatic retry loops. A timeout, dropped stream, or error does not by itself establish whether the request was billed. A request working in a different client or channel is useful support context, but does not verify this API route.
+
 ## Share integration feedback
 
-If you are evaluating the launch preview, [open the Earth API integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). It asks for the client or framework, endpoint format, expected result, and a sanitized error or example request.
+If you are evaluating the launch preview, [open the Earth API integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). It supports Chat Completions, Responses, Anthropic Messages, and model discovery. Include the client or SDK version, model ID, request time with timezone, HTTP status, error code or type, request ID and `Retry-After` value if supplied, streaming mode, retry behavior, and the expected result. Do not paste full headers.
 
 This public form is maintained by the Earth API operator. Remove API keys, account tokens, billing details, private prompts, personal data, and unredacted headers before submitting. A report documents developer feedback; it does not confirm service availability, model access, pricing, or an official relationship with an upstream provider.
 
