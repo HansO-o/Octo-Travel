@@ -1,12 +1,12 @@
 {
-  "schema_version": "0.4",
+  "schema_version": "0.5",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
-  "launch_status": "preview",
+  "launch_status": "live",
   "observed_public_state": {
-    "checked_at": "2026-09-30T21:38:00+08:00",
+    "checked_at": "2026-09-30T22:27:56+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -19,7 +19,7 @@
     ],
     "pricing_currency": "USD",
     "pricing_unit": "per million tokens",
-    "general_availability_verified": false,
+    "general_availability_verified": true,
     "live_verification_required": true,
     "public_pricing_interface_live": true,
     "public_pricing_loading_state_observed": false
@@ -75,12 +75,29 @@
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
   ],
   "limitations": [
-    "The public product page, English documentation, OGS-backed sign-in and account-creation entry, and model pricing rows are live.",
-    "The public page showed claude-opus-5-5 and gpt-6-sol during the recorded check; current account access and upstream capacity can still differ.",
-    "This file remains a repository-hosted launch preview, not a general-availability or uptime guarantee.",
-    "It does not guarantee current model access, future pricing, complete upstream API equivalence, or data-retention behavior.",
+    "The public product page, English documentation, OGS-backed sign-in and account-creation entry, model pricing rows, and paid model requests are live.",
+    "The catalog and live validation included claude-opus-5-5 and gpt-6-sol; current account access and upstream capacity can still differ.",
+    "For claude-opus-5-5, automatic tool selection was validated; the upstream rejected forced tool_choice modes during launch testing.",
+    "This manifest records a successful launch check, not an uptime, capacity, future pricing, complete upstream API-equivalence, or data-retention guarantee.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
   ],
   "operator_disclosure": "Published by the Earth API operator.",
-  "content_disclosure": "Prepared with AI assistance and reviewed against the observed public launch state on 30 September 2026."
+  "content_disclosure": "Prepared with AI assistance and reviewed against the live product, pricing, and end-to-end API checks on 30 September 2026.",
+  "end_to_end_validation": {
+    "checked_at": "2026-09-30T22:27:56+08:00",
+    "base_url": "https://api.earth.icu/v1",
+    "passed": 13,
+    "failed": 0,
+    "validated": [
+      "authenticated model discovery",
+      "invalid-key and invalid-model errors",
+      "OpenAI Chat Completions JSON and SSE",
+      "OpenAI Responses JSON and SSE",
+      "OpenAI-compatible function calls",
+      "Anthropic-compatible Chat Completions JSON and SSE",
+      "native Anthropic Messages JSON and SSE",
+      "Claude automatic tool calls",
+      "final provider usage reporting"
+    ]
+  }
 }
