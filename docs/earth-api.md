@@ -226,6 +226,23 @@ node docs/examples/earth-api-openai-sdk.mjs --generate --api responses --model Y
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
 
+### Stream text with the JavaScript SDK
+
+The [JavaScript SDK example](examples/earth-api-openai-sdk.mjs) also accepts `--stream`. It uses the SDK's SSE parser and prints text deltas as they arrive.
+
+After checking current pricing and model access, opt in to one generation request:
+
+```bash
+node docs/examples/earth-api-openai-sdk.mjs --generate --model YOUR_AVAILABLE_MODEL_ID --stream
+node docs/examples/earth-api-openai-sdk.mjs --generate --api responses --model YOUR_AVAILABLE_MODEL_ID --stream
+```
+
+Choose one command for the interface you intend to test; each invocation sends a separate generation request and may incur charges. Without `--generate`, the script only lists models; `--stream` alone is rejected.
+
+Chat Completions prints `choices[0].delta.content` and reports the finish reason. Responses prints `response.output_text.delta` events and requires `response.completed`. A failed, incomplete, or truncated Responses stream exits with an error; a Chat stream without a finish reason also exits with an error. Text already printed before an interruption may be partial. The example is for text replies, not tool execution, audio, or a complete event debugger.
+
+A stream ending locally does not prove cancellation or settle the final bill. Review request status in Usage before sending the request again. Automatic retries remain disabled. This is a client example verified with offline fixtures, not evidence of successful paid streaming through Earth API.
+
 ### Go standard-library example
 
 A [Go standard-library example](examples/earth-api-go.go) uses only Go's built-in HTTP and JSON packages. It lists the authenticated model catalog by default and performs no automatic retries.
