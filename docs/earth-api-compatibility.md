@@ -34,7 +34,7 @@ Use each endpoint's native response and streaming format. Chat Completions uses 
 ## Known boundaries
 
 - For the verified Claude workflow, automatic tool selection worked. Forced `tool_choice` modes `tool` and `any` were rejected by the upstream during launch testing.
-- Do not assume every optional sampling or output-limit parameter is enforced. Unsupported or unrepresentable parameters may return an explicit error.
+- Recognized parameters are translated when the selected upstream can represent them. Unrecognized or unrepresentable optional fields are ignored instead of blocking the request, so clients must not assume that every submitted option took effect.
 - A successful catalog request does not prove that a later generation will have sufficient balance or upstream capacity.
 - A client timeout or dropped stream does not prove server-side cancellation or establish whether usage was billed.
 - Earth API is independently operated and does not claim an official relationship with an upstream model provider.
