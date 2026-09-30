@@ -1,8 +1,8 @@
 # Earth API production-readiness checklist
 
-This checklist helps a developer decide whether an Earth API launch-preview integration is ready to move beyond local evaluation. It is published by the Earth API operator and was prepared with AI assistance.
+This checklist helps a developer decide whether an Earth API integration is ready to move beyond local evaluation. It is published by the Earth API operator and was prepared with AI assistance.
 
-> **Public status checked 30 September 2026 at 18:38 (Asia/Shanghai):** the English product page, documentation, console entry, multilingual selector, and Models & pricing interface are live. The public pricing interface remained on `Loading current model prices…` and exposed no model or rate rows in this check. Treat the service as an integration preview until your account, enabled models, current rates, and a minimal request are verified.
+> **Live launch verified 30 September 2026 at 22:27 (Asia/Shanghai):** the English product page, documentation, OGS-backed console and sign-up entry, public pricing rows, authenticated catalog, and paid requests are live. Thirteen end-to-end checks passed across the advertised interfaces. Your own account, enabled models, balance, current rates, and minimal request still need verification before production traffic.
 
 This is an engineering checklist, not a security certification, legal opinion, service-level agreement, or promise of general availability.
 
@@ -20,7 +20,7 @@ This is an engineering checklist, not a security certification, legal opinion, s
 | Data | The submitted prompt and metadata are appropriate for the current service terms and your own obligations. | The request contains unnecessary personal, regulated, confidential, or production data. |
 | Rollback | You can disable the integration or restore the previous provider without waiting for a new client release. | The integration has no kill switch, fallback decision, or accountable operator. |
 
-A single red item is a no-go for production traffic. A yellow or unknown item keeps the integration in preview evaluation.
+A single red item is a no-go for production traffic. A yellow or unknown item keeps the integration out of production traffic.
 
 ## 1. Verify the exact public surface
 
@@ -31,7 +31,7 @@ Confirm these resources at the time of the test:
 - [Official developer documentation](https://api.earth.icu/docs)
 - [Models & pricing](https://api.earth.icu/models)
 - [Console](https://api.earth.icu/console)
-- [Repository-hosted OpenAPI preview](earth-api-openapi.yaml)
+- [Repository-hosted OpenAPI reference](earth-api-openapi.yaml)
 - [Machine-readable service metadata](earth-api-service.json)
 
 Do not treat DNS resolution, a landing page, an HTTP authentication error, or a successful health check as proof that paid inference is available.
