@@ -1,36 +1,53 @@
 {
-  "schema_version": "0.1",
+  "schema_version": "0.2",
   "name": "Earth API",
-  "description": "Independent, maintainer-operated AI API relay for developers using OpenAI-style request formats.",
+  "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "preview",
   "observed_public_state": {
-    "checked_at": "2026-09-29T23:43:27+08:00",
-    "base_url_documented": true,
-    "account_entry_present": true,
+    "checked_at": "2026-09-30T12:43:00+08:00",
+    "english_product_page_live": true,
+    "english_documentation_live": true,
+    "console_entry_present": true,
+    "public_model_catalog_published": false,
     "public_pricing_rows_present": false,
-    "paid_model_calls_open": false,
+    "general_availability_verified": false,
     "live_verification_required": true
   },
   "interfaces": [
     {
       "name": "Model discovery",
       "method": "GET",
-      "path": "/models"
+      "path": "/models",
+      "authentication": "Authorization: Bearer EARTH_API_KEY"
     },
     {
       "name": "Chat Completions",
       "method": "POST",
-      "path": "/chat/completions"
+      "path": "/chat/completions",
+      "authentication": "Authorization: Bearer EARTH_API_KEY"
     },
     {
       "name": "Responses",
       "method": "POST",
-      "path": "/responses"
+      "path": "/responses",
+      "authentication": "Authorization: Bearer EARTH_API_KEY"
+    },
+    {
+      "name": "Anthropic Messages",
+      "method": "POST",
+      "path": "/messages",
+      "authentication": "x-api-key: EARTH_API_KEY"
     }
   ],
-  "documentation": {
+  "official_resources": {
+    "home": "https://api.earth.icu",
+    "documentation": "https://api.earth.icu/docs",
+    "models_and_pricing": "https://api.earth.icu/models",
+    "console": "https://api.earth.icu/console"
+  },
+  "repository_resources": {
     "overview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md",
     "integration_guide": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md",
     "openapi_preview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml",
@@ -40,14 +57,15 @@
   },
   "usage_checks": [
     "Confirm current account access and API-key creation.",
-    "Query the authenticated model catalog before choosing a model.",
-    "Review the current account price before generation.",
+    "Wait for the public catalog or query the authenticated model catalog before choosing a model.",
+    "Review the published account price before generation.",
     "Start with a minimal request and disable automatic retries.",
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
   ],
   "limitations": [
-    "This file is a repository-hosted integration preview, not a general-availability announcement.",
-    "It does not guarantee current model access, pricing, uptime, complete OpenAI API equivalence, or data-retention behavior.",
+    "The English product and documentation pages are live, but the public model catalog and rate rows were still unpublished at the observed check time.",
+    "This file remains a repository-hosted integration preview, not a general-availability announcement.",
+    "It does not guarantee current model access, pricing, uptime, complete upstream API equivalence, or data-retention behavior.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
   ],
   "operator_disclosure": "Published by the Earth API operator.",
