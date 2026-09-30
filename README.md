@@ -8,22 +8,23 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 Start with the [one-page Earth API developer overview](docs/earth-api-overview.md) for the current launch status, supported preview resources, safety checks, and operator disclosure.
 
-[Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI-style Responses and Chat Completions request formats. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. Public pricing and paid model access are still being configured; verify live availability before integration.
+[Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page and [developer documentation](https://api.earth.icu/docs) are live. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. The public model catalog and rate rows were still unpublished at the latest check; verify live availability before integration.
 
-Current public status, checked 29 September 2026 (Asia/Shanghai):
+Current public status, checked 30 September 2026 at 12:43 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
-| Product page | Reachable at the canonical Earth API link and documents the `/v1` base URL. |
-| Account entry | An Ogin login/registration link is present; this check did not complete an account signup. |
-| Models and pricing | The public price table has no model rows, and the page says paid model calls are not yet open. |
-| Preview scope | Documentation and request-shape preview only; no paid inference or general-availability claim. |
+| Product page | An English-first landing page is live at the canonical Earth API link, with 12 additional language options and the `/v1` base URL. |
+| Documentation | Official English quickstart, endpoint, streaming, billing, key-management, and error guidance is live at [api.earth.icu/docs](https://api.earth.icu/docs). |
+| Account entry | Console and OGS sign-in links are present; this check did not create an account or API key. |
+| Models and pricing | The public page says the model catalog is being prepared; no model or rate rows were published at the check time. |
+| Preview scope | Public developer surface is live, but no paid-inference or general-availability claim is made until models, rates, and account access are verified. |
 
 For sanitized setup or compatibility feedback, use the [operator-maintained integration form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). Do not include API keys, account tokens, billing details, private prompts, personal data, or production secrets.
 
 Want to use a configurable AI backend with this travel planner? See [Connect Roamline to Earth API](docs/earth-api.md) for the server-side endpoint and key configuration.
 
-Tooling can import the [Earth API OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). The specification documents request shapes and does not guarantee migration status, enabled models, or pricing.
+Tooling can read the [Earth API service metadata](docs/earth-api-service.json) or import the [OpenAPI 3.1 preview](docs/earth-api-openapi.yaml). These files document the public developer surface and request shapes without guaranteeing enabled models, current rates, or general availability.
 
 Developers can also import the [Earth API Postman launch-preview collection](docs/earth-api-postman-collection.json). It defaults to model discovery and blocks generation until the user explicitly opts in and selects a current model.
 
