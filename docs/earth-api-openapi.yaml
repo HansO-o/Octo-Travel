@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Earth API
-  version: 0.1.1-preview
+  version: 0.2.0-preview
   summary: Preview specification for an independent AI API relay
   description: |
     Machine-readable integration preview for Earth API, an independent
@@ -33,6 +33,8 @@ tags:
     description: OpenAI-style chat request and response format.
   - name: Responses
     description: OpenAI-style Responses request and event format.
+  - name: Messages
+    description: Anthropic-style Messages request and response format.
 paths:
   /models:
     get:
@@ -121,6 +123,52 @@ paths:
           $ref: "#/components/responses/AuthenticationError"
         default:
           $ref: "#/components/responses/ApiError"
+  /messages:
+    post:
+      operationId: createMessage
+      summary: Create a message
+      description: |
+        Sends an Anthropic-style Messages request. Use an Earth API model-access
+        key in x-api-key and include anthropic-version: 2023-06-01. A request
+        may incur charges.
+      tags: [Messages]
+      security:
+        - anthropicApiKey: []
+      parameters:
+        - name: anthropic-version
+          in: header
+          required: true
+          description: Anthropic protocol version documented by Earth API.
+          schema:
+            type: string
+            examples: ["2023-06-01"]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnthropicMessageRequest"
+            example:
+              model: YOUR_AVAILABLE_ANTHROPIC_MODEL_ID
+              max_tokens: 1024
+              messages:
+                - role: user
+                  content: Reply with one short greeting.
+      responses:
+        "200":
+          description: Anthropic-style message response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnthropicMessageResponse"
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent Anthropic Messages events when streaming is enabled.
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        default:
+          $ref: "#/components/responses/ApiError"
 components:
   securitySchemes:
     bearerAuth:
@@ -130,6 +178,11 @@ components:
       description: |
         Use an Earth API model-access key. Do not use an Ogin login token,
         an upstream-provider key, or an application's separate access key.
+    anthropicApiKey:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Earth API model-access key for the Anthropic Messages endpoint.
   responses:
     AuthenticationError:
       description: Missing or invalid Earth API model-access key
@@ -267,6 +320,58 @@ components:
           items:
             type: object
             additionalProperties: true
+        usage:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    AnthropicMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+      additionalProperties: true
+    AnthropicMessageRequest:
+      type: object
+      required: [model, max_tokens, messages]
+      properties:
+        model:
+          type: string
+          description: Select an Anthropic-compatible ID available to this account.
+        max_tokens:
+          type: integer
+          minimum: 1
+        messages:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/AnthropicMessage"
+        stream:
+          type: boolean
+          default: false
+      additionalProperties: true
+    AnthropicMessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        role:
+          type: string
+        model:
+          type: string
+        content:
+          type: array
+          items: {}
+        stop_reason:
+          type: [string, "null"]
         usage:
           type: object
           additionalProperties: true
