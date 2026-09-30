@@ -15,6 +15,7 @@ Options:
                     only lists models and does not generate text.
   --api INTERFACE   Generation interface: chat or responses (default: chat).
   --model MODEL_ID  Model ID returned by the model-list request.
+  --stream          Print text as it arrives (requires --generate).
   --help            Show this help.
 
 Install:
@@ -41,7 +42,7 @@ if (args.includes('--help')) {
   process.exit(0);
 }
 
-const allowedArgs = new Set(['--generate', '--api', '--model']);
+const allowedArgs = new Set(['--generate', '--api', '--model', '--stream']);
 for (let index = 0; index < args.length; index += 1) {
   const arg = args[index];
   if (!allowedArgs.has(arg)) {
@@ -51,6 +52,7 @@ for (let index = 0; index < args.length; index += 1) {
 }
 
 const generate = args.includes('--generate');
+const streaming = args.includes('--stream');
 const api = valueAfter(args, '--api') ?? 'chat';
 const requestedModel = valueAfter(args, '--model');
 
@@ -59,6 +61,9 @@ if (!['chat', 'responses'].includes(api)) {
 }
 if (args.includes('--api') && !generate) {
   throw new Error('--api is only used together with --generate.');
+}
+if (streaming && !generate) {
+  throw new Error('--stream is only used together with --generate.');
 }
 if (requestedModel && !generate) {
   throw new Error('--model is only used together with --generate.');
@@ -112,24 +117,63 @@ try {
         {
           model: requestedModel,
           input: 'Reply with one short greeting.',
-          stream: false,
+          stream: streaming,
         },
         { signal: controller.signal },
       );
       console.log('\nResponses API output:');
-      console.log(response.output_text || '(empty response)');
+      if (streaming) {
+        let completed = false;
+        for await (const event of response) {
+          if (event.type === 'response.output_text.delta') {
+            process.stdout.write(event.delta);
+          } else if (event.type === 'response.refusal.delta') {
+            process.stdout.write(event.delta);
+          } else if (['error', 'response.failed', 'response.incomplete'].includes(event.type)) {
+            throw new Error(`Responses stream ended with ${event.type}; check Usage before retrying.`);
+          } else if (event.type === 'response.completed') {
+            completed = true;
+          }
+        }
+        console.log();
+        if (!completed) {
+          throw new Error('Responses stream ended without response.completed; output may be partial.');
+        }
+      } else {
+        console.log(response.output_text || '(empty response)');
+      }
     } else {
       const completion = await client.chat.completions.create(
         {
           model: requestedModel,
           messages: [{ role: 'user', content: 'Reply with one short greeting.' }],
-          stream: false,
+          stream: streaming,
         },
         { signal: controller.signal },
       );
-      const text = completion.choices?.[0]?.message?.content;
       console.log('\nChat Completions output:');
-      console.log(text || '(empty response)');
+      if (streaming) {
+        let finishReason;
+        for await (const chunk of completion) {
+          if (chunk.error) {
+            throw new Error('Chat stream returned an error; check Usage before retrying.');
+          }
+          const choice = chunk.choices?.find((item) => item.index === 0);
+          process.stdout.write(choice?.delta?.content ?? choice?.delta?.refusal ?? '');
+          if (choice?.finish_reason != null) finishReason = choice.finish_reason;
+        }
+        console.log();
+        if (finishReason == null) {
+          throw new Error('Chat stream ended without a finish reason; output may be partial.');
+        }
+        console.log(`Finish reason: ${finishReason}`);
+        if (finishReason !== 'stop') {
+          console.warn('The stream ended without a normal text stop; inspect the result before using it.');
+        }
+      } else {
+        const text = completion.choices?.[0]?.message?.content;
+        console.log(text || '(empty response)');
+      }
     }
   } finally {
     clearTimeout(timer);
@@ -137,5 +181,6 @@ try {
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error(`Earth API request failed: ${message}`);
+  console.error('Local timeouts or interrupted streams do not prove cancellation. Check Usage before retrying.');
   process.exitCode = 1;
 }
