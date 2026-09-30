@@ -1,19 +1,21 @@
 {
-  "schema_version": "0.2",
+  "schema_version": "0.3",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "preview",
   "observed_public_state": {
-    "checked_at": "2026-09-30T12:43:00+08:00",
+    "checked_at": "2026-09-30T16:32:00+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
     "public_model_catalog_published": false,
     "public_pricing_rows_present": false,
     "general_availability_verified": false,
-    "live_verification_required": true
+    "live_verification_required": true,
+    "public_pricing_interface_live": true,
+    "public_pricing_loading_state_observed": true
   },
   "interfaces": [
     {
@@ -53,17 +55,18 @@
     "openapi_preview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml",
     "postman_collection": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json",
     "llms_index": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/llms.txt",
-    "feedback": "https://github.com/HansO-o/Octo-Travel/issues/1"
+    "feedback": "https://github.com/HansO-o/Octo-Travel/issues/1",
+    "anthropic_messages_python": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py"
   },
   "usage_checks": [
     "Confirm current account access and API-key creation.",
-    "Wait for the public catalog or query the authenticated model catalog before choosing a model.",
+    "Query the authenticated model catalog before choosing a model; do not rely on an indefinitely loading public page.",
     "Review the published account price before generation.",
     "Start with a minimal request and disable automatic retries.",
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
   ],
   "limitations": [
-    "The English product and documentation pages are live, but the public model catalog and rate rows were still unpublished at the observed check time.",
+    "The English product, documentation, console, and pricing interface are live, but the latest public browser check remained on its pricing loading state and exposed no model or rate rows.",
     "This file remains a repository-hosted integration preview, not a general-availability announcement.",
     "It does not guarantee current model access, pricing, uptime, complete upstream API equivalence, or data-retention behavior.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
