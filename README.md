@@ -8,16 +8,16 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 Start with the [one-page Earth API developer overview](docs/earth-api-overview.md) for the current launch status, supported preview resources, safety checks, and operator disclosure.
 
-[Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page and [developer documentation](https://api.earth.icu/docs) are live. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. The public model catalog and rate rows were still unpublished at the latest check; verify live availability before integration.
+[Earth API](https://api.earth.icu) is a maintainer-operated AI API relay presented with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page and [developer documentation](https://api.earth.icu/docs) are live. This repository provides a launch-preview quickstart for the documented `https://api.earth.icu/v1` base URL, including model discovery, server-side key handling, request examples, and troubleshooting. The public pricing route did not expose model or rate rows in the latest browser check; verify live availability before integration.
 
-Current public status, checked 30 September 2026 at 12:43 (Asia/Shanghai):
+Current public status, checked 30 September 2026 at 15:37 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
 | Product page | An English-first landing page is live at the canonical Earth API link, with 12 additional language options and the `/v1` base URL. |
 | Documentation | Official English quickstart, endpoint, streaming, billing, key-management, and error guidance is live at [api.earth.icu/docs](https://api.earth.icu/docs). |
 | Account entry | Console and OGS sign-in links are present; this check did not create an account or API key. |
-| Models and pricing | The public page says the model catalog is being prepared; no model or rate rows were published at the check time. |
+| Models and pricing | The public route renders its pricing interface but remained on `Loading current model prices…`; no model or rate rows were visible at the check time. |
 | Preview scope | Public developer surface is live, but no paid-inference or general-availability claim is made until models, rates, and account access are verified. |
 
 For sanitized setup or compatibility feedback, use the [operator-maintained integration form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). Do not include API keys, account tokens, billing details, private prompts, personal data, or production secrets.
@@ -31,6 +31,8 @@ Developers can also import the [Earth API Postman launch-preview collection](doc
 The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and only sends a Chat Completions or Responses request after an explicit `--generate --model` opt-in.
 
 The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Python 3.10+, lists models by default, disables automatic retries, and applies the same explicit opt-in to Chat Completions and Responses.
+
+The [Anthropic Messages Python example](docs/examples/earth_api_anthropic_messages.py) uses only the Python 3.10+ standard library. It lists models by default and requires explicit `--generate --model` flags before sending one Messages request.
 
 The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags for Chat Completions or Responses.
 
