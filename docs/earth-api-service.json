@@ -1,21 +1,28 @@
 {
-  "schema_version": "0.3",
+  "schema_version": "0.4",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "preview",
   "observed_public_state": {
-    "checked_at": "2026-09-30T18:38:00+08:00",
+    "checked_at": "2026-09-30T21:38:00+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
-    "public_model_catalog_published": false,
-    "public_pricing_rows_present": false,
+    "public_signup_entry_present": true,
+    "public_model_catalog_published": true,
+    "public_pricing_rows_present": true,
+    "published_model_ids_observed": [
+      "claude-opus-5-5",
+      "gpt-6-sol"
+    ],
+    "pricing_currency": "USD",
+    "pricing_unit": "per million tokens",
     "general_availability_verified": false,
     "live_verification_required": true,
     "public_pricing_interface_live": true,
-    "public_pricing_loading_state_observed": true
+    "public_pricing_loading_state_observed": false
   },
   "interfaces": [
     {
@@ -61,18 +68,19 @@
     "anthropic_messages_node": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-anthropic-messages.mjs"
   },
   "usage_checks": [
-    "Confirm current account access and API-key creation.",
-    "Query the authenticated model catalog before choosing a model; do not rely on an indefinitely loading public page.",
-    "Review the published account price before generation.",
-    "Start with a minimal request and disable automatic retries.",
+    "Create or sign in to an Earth account and create a server-side API key.",
+    "Review the live Models & pricing page, then query the authenticated model catalog before choosing a model.",
+    "Start with one minimal request and keep automatic retries disabled until the result and Usage record are understood.",
+    "Treat model discovery and successful inference as separate checks.",
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
   ],
   "limitations": [
-    "The English product, documentation, console, and pricing interface are live, but the latest public browser check remained on its pricing loading state and exposed no model or rate rows.",
-    "This file remains a repository-hosted integration preview, not a general-availability announcement.",
-    "It does not guarantee current model access, pricing, uptime, complete upstream API equivalence, or data-retention behavior.",
+    "The public product page, English documentation, OGS-backed sign-in and account-creation entry, and model pricing rows are live.",
+    "The public page showed claude-opus-5-5 and gpt-6-sol during the recorded check; current account access and upstream capacity can still differ.",
+    "This file remains a repository-hosted launch preview, not a general-availability or uptime guarantee.",
+    "It does not guarantee current model access, future pricing, complete upstream API equivalence, or data-retention behavior.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
   ],
   "operator_disclosure": "Published by the Earth API operator.",
-  "content_disclosure": "Prepared with AI assistance and reviewed against the observed public launch state."
+  "content_disclosure": "Prepared with AI assistance and reviewed against the observed public launch state on 30 September 2026."
 }
