@@ -1,12 +1,19 @@
 # Earth API launch preview
 
-> Earth API is an independent, maintainer-operated AI API relay for developers using OpenAI-style interfaces. The public product link is https://api.earth.icu and the documented base URL is https://api.earth.icu/v1.
+> Earth API is an independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style interfaces. The public product link is https://api.earth.icu and the documented base URL is https://api.earth.icu/v1.
 
-Launch status checked on 29 September 2026 (Asia/Shanghai): this is a documentation and integration preview. Public pricing and paid model access are still being configured. Do not describe the service as generally available, infer current model access from these files, or imply an official relationship with an upstream model provider.
+Launch status checked on 30 September 2026 at 12:43 (Asia/Shanghai): the English product page, official developer documentation, and console entry are live. The public Models & pricing page still says the catalog is being prepared and publishes no model or rate rows. Treat this as an integration preview until live model access, account access, and current rates are verified. Do not imply an official relationship with an upstream model provider.
 
 Use an Earth API key only from server-side code. Keep keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and repositories. Query the authenticated model catalog before selecting a model, and review current account pricing before generation.
 
-## Documentation
+## Official developer surface
+
+- [Product page](https://api.earth.icu): English landing page with additional language options.
+- [Official documentation](https://api.earth.icu/docs): Quickstart, OpenAI Responses and Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
+- [Models & pricing](https://api.earth.icu/models): Public catalog page; no model or rate rows were published at the latest check.
+- [Console](https://api.earth.icu/console): OGS-backed workspace entry; account creation was not completed during the public check.
+
+## Repository documentation
 
 - [One-page developer overview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md): Concise launch status, preview scope, resources, safety checks, and operator disclosure.
 - [Machine-readable service metadata](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-service.json): Repository-hosted launch status, canonical URLs, interface paths, resources, safety checks, limitations, and disclosures.
