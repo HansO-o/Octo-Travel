@@ -27,7 +27,7 @@ body:
     attributes:
       label: Client, SDK, or framework
       description: Include the version when known.
-      placeholder: "Example: curl 8.x, openai-python 2.x, or a named application"
+      placeholder: "Example: curl 8.x, an OpenAI or Anthropic SDK version, or a named application"
     validations:
       required: true
   - type: dropdown
@@ -37,6 +37,7 @@ body:
       options:
         - Chat Completions
         - Responses
+        - Anthropic Messages
         - Model discovery
         - Not sure
     validations:
@@ -55,6 +56,46 @@ body:
       description: Redact secrets and personal data. Include only the minimum error text needed to understand the issue.
     validations:
       required: true
+  - type: input
+    id: observed_at
+    attributes:
+      label: Request time
+      description: Use UTC or include the timezone. This helps match a single request with usage records.
+      placeholder: "2026-09-30T12:00:00Z"
+  - type: input
+    id: model
+    attributes:
+      label: Model ID
+      description: Include the requested model ID. Do not include an account ID or credentials.
+  - type: input
+    id: http_status
+    attributes:
+      label: HTTP status and error code or type
+      description: Report only the status and machine-readable code or type returned; do not guess the cause.
+      placeholder: "429 / rate_limit_error"
+  - type: input
+    id: request_id
+    attributes:
+      label: Request ID
+      description: Include only a request ID supplied by the response, if present. Never paste tokens or full headers.
+  - type: input
+    id: retry_after
+    attributes:
+      label: Retry-After
+      description: If present, copy only this response header's value. Leave blank if absent.
+  - type: dropdown
+    id: streaming
+    attributes:
+      label: Was streaming enabled?
+      options:
+        - "Not sure"
+        - "No"
+        - "Yes"
+  - type: textarea
+    id: retries
+    attributes:
+      label: Retry behavior
+      description: State whether the client or SDK retried automatically, and how many attempts you observed.
   - type: textarea
     id: environment
     attributes:
