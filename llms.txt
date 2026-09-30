@@ -10,7 +10,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 
 - [Product page](https://api.earth.icu): English landing page with additional language options.
 - [Official documentation](https://api.earth.icu/docs): Quickstart, OpenAI Responses and Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
-- [Models & pricing](https://api.earth.icu/models): Live public rows for `gpt-6-sol` and `claude-opus-5-5`, with USD rates per million tokens.
+- [Models & pricing](https://api.earth.icu/models): The public page currently lists `claude-opus-5-5`, `gpt-6-astra`, `gpt-6-luna`, and `gpt-6.1-sol`, with USD rates per million tokens; the catalog and rates can change.
 - [Console](https://api.earth.icu/console): OGS-backed workspace and public sign-up entry.
 
 ## Repository documentation
