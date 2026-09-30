@@ -17,7 +17,7 @@ Current public status, checked 30 September 2026 at 15:37 (Asia/Shanghai):
 | Product page | An English-first landing page is live at the canonical Earth API link, with 12 additional language options and the `/v1` base URL. |
 | Documentation | Official English quickstart, endpoint, streaming, billing, key-management, and error guidance is live at [api.earth.icu/docs](https://api.earth.icu/docs). |
 | Account entry | Console and OGS sign-in links are present; this check did not create an account or API key. |
-| Models and pricing | The public route renders its pricing interface but remained on `Loading current model prices…`; no model or rate rows were visible at the check time. |
+| Models and pricing | The public route shows live USD-per-million-token rows for `gpt-6-sol` and `claude-opus-5-5`; review it again before use because rates can change. |
 | Launch scope | Public developer surface, pricing, authenticated model discovery, and paid inference were live-validated; current account access and upstream capacity can still differ. |
 
 For sanitized setup or compatibility feedback, use the [operator-maintained integration form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml). Do not include API keys, account tokens, billing details, private prompts, personal data, or production secrets.
