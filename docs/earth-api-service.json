@@ -6,7 +6,7 @@
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "preview",
   "observed_public_state": {
-    "checked_at": "2026-09-30T16:32:00+08:00",
+    "checked_at": "2026-09-30T17:33:00+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -56,7 +56,8 @@
     "postman_collection": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json",
     "llms_index": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/llms.txt",
     "feedback": "https://github.com/HansO-o/Octo-Travel/issues/1",
-    "anthropic_messages_python": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py"
+    "anthropic_messages_python": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py",
+    "anthropic_messages_node": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-anthropic-messages.mjs"
   },
   "usage_checks": [
     "Confirm current account access and API-key creation.",
