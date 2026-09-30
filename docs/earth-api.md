@@ -10,7 +10,7 @@ Postman preview: [import the Earth API collection](earth-api-postman-collection.
 
 AI-agent index: [repository-scoped `docs/llms.txt`](llms.txt) provides a compact map to these preview resources. It is not deployed at the Earth API domain root and does not change the live launch status.
 
-> **Launch preview — checked 29 September 2026 (Asia/Shanghai):** The public Earth API page now documents `https://api.earth.icu/v1` and presents an Ogin login/registration link, but public pricing is still empty and the page says paid model calls are not yet open. The examples below use the documented address. Verify your account, the current model catalog, and pricing before switching a running deployment. This guide does not claim general paid availability or guarantee model access.
+> **Launch preview — checked 30 September 2026 at 15:37 (Asia/Shanghai):** The English product page, documentation, console entry, and Models & pricing route are live. In the public browser check, the pricing route remained on `Loading current model prices…` and exposed no model or rate rows. The examples below use the documented `https://api.earth.icu/v1` address. Verify your account, the authenticated model catalog, and current pricing before switching a running deployment. This guide does not claim general paid availability or guarantee model access.
 
 ## 1. Set the endpoint and model
 
@@ -165,6 +165,24 @@ python docs/examples/earth_api_openai_sdk.py --generate --api responses --model 
 ```
 
 A generation request may incur a charge. The example uses no automatic retries, does not print the API key, and warns that a local timeout does not guarantee server-side cancellation.
+
+### Anthropic Messages Python example
+
+A dependency-free [Python 3.10+ Anthropic Messages example](examples/earth_api_anthropic_messages.py) uses the documented `POST /v1/messages` endpoint, `x-api-key`, and `anthropic-version: 2023-06-01`. It first lists the authenticated catalog and sends no generation request by default.
+
+```bash
+python docs/examples/earth_api_anthropic_messages.py --help
+python docs/examples/earth_api_anthropic_messages.py
+```
+
+After reviewing current pricing, opt in to one non-streaming request with a model returned by the catalog:
+
+```bash
+python docs/examples/earth_api_anthropic_messages.py \
+  --generate --model YOUR_AVAILABLE_ANTHROPIC_MODEL_ID
+```
+
+Generation may incur a charge. The example performs no automatic retries, refuses redirects, does not print the API key, and warns that a local timeout does not prove server-side cancellation.
 
 ### OpenAI JavaScript SDK example
 
