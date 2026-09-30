@@ -1,8 +1,8 @@
-# Earth API launch preview
+# Earth API
 
 > Earth API is an independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style interfaces. The public product link is https://api.earth.icu and the documented base URL is https://api.earth.icu/v1.
 
-Launch status checked on 30 September 2026 at 15:37 (Asia/Shanghai): the English product page, official developer documentation, console entry, and Models & pricing route are live. In the public browser check, the pricing route remained on `Loading current model prices…` and exposed no model or rate rows. Treat this as an integration preview until live model access, account access, and current rates are verified. Do not imply an official relationship with an upstream model provider.
+Live launch verified on 30 September 2026 at 22:27 (Asia/Shanghai): the English product page, official developer documentation, OGS-backed console and sign-up entry, public pricing rows, and authenticated model catalog are live. Thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`, covering JSON and SSE responses, OpenAI Chat Completions and Responses, native Anthropic Messages, tool calls, errors, and final usage. Model access, upstream capacity, and pricing can change; query the catalog and review live rates before use. Earth API is independent and does not imply an official relationship with an upstream model provider.
 
 Use an Earth API key only from server-side code. Keep keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and repositories. Query the authenticated model catalog before selecting a model, and review current account pricing before generation.
 
@@ -10,15 +10,15 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 
 - [Product page](https://api.earth.icu): English landing page with additional language options.
 - [Official documentation](https://api.earth.icu/docs): Quickstart, OpenAI Responses and Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
-- [Models & pricing](https://api.earth.icu/models): Public pricing route; the latest browser check remained on its loading state and exposed no model or rate rows.
-- [Console](https://api.earth.icu/console): OGS-backed workspace entry; account creation was not completed during the public check.
+- [Models & pricing](https://api.earth.icu/models): Live public rows for `gpt-6-sol` and `claude-opus-5-5`, with USD rates per million tokens.
+- [Console](https://api.earth.icu/console): OGS-backed workspace and public sign-up entry.
 
 ## Repository documentation
 
 - [One-page developer overview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md): Concise launch status, preview scope, resources, safety checks, and operator disclosure.
 - [Production-readiness checklist](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-production-readiness.md): Go/no-go gates for account access, models, pricing, authentication, secrets, spending controls, compatibility, support evidence, and rollback.
 - [Machine-readable service metadata](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-service.json): Repository-hosted launch status, canonical URLs, interface paths, resources, safety checks, limitations, and disclosures.
-- [Integration guide](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md): Launch-preview setup, direct connectivity checks, compatibility notes, security guidance, and troubleshooting.
+- [Integration guide](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md): Live-service setup, direct connectivity checks, compatibility notes, security guidance, and troubleshooting.
 - [OpenAPI 3.1 preview](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml): Machine-readable request shapes for model discovery, Chat Completions, Responses, and Anthropic Messages.
 - [Postman collection](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json): Importable requests with generation disabled until the user explicitly opts in.
 
@@ -35,7 +35,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 ## Feedback
 
 - [Structured integration feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml): Operator-maintained public form for sanitized compatibility reports.
-- [Launch-preview discussion](https://github.com/HansO-o/Octo-Travel/issues/1): Operator disclosure, current status, preview resources, and public replies.
+- [Launch discussion](https://github.com/HansO-o/Octo-Travel/issues/1): Operator disclosure, current status, preview resources, and public replies.
 
 ## Optional
 
