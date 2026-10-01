@@ -10,7 +10,7 @@ Start with the [one-page Earth API developer overview](docs/earth-api-overview.m
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 2 October 2026 at 01:45 (Asia/Shanghai):
+Current public status, checked 2 October 2026 at 01:41 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
