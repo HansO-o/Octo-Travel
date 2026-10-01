@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Earth API
-  version: 1.0.0
+  version: 1.1.0
   summary: Live API specification for an independent AI API relay
   description: |
     Machine-readable integration reference for Earth API, an independent
@@ -21,6 +21,7 @@ info:
     name: Earth API integration feedback
     url: https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml
   x-launch-status: live
+  x-last-reviewed: "2026-10-01T15:32:48+08:00"
 servers:
   - url: https://api.earth.icu/v1
     description: Documented Earth API public host; verify account, models, and pricing before use
@@ -61,7 +62,11 @@ paths:
       summary: Create a chat completion
       description: |
         Sends an OpenAI-style Chat Completions request. Set stream to false for
-        JSON or true for server-sent events. A request may incur charges.
+        JSON or true for server-sent events. Use service_tier for an explicit
+        processing-tier request. The web_search_options object is an Earth API
+        compatibility extension for Codex OAuth routes. Tier and search access
+        depend on the selected model, route, and account. A request may incur
+        charges.
       tags: [Chat Completions]
       requestBody:
         required: true
@@ -85,7 +90,10 @@ paths:
             text/event-stream:
               schema:
                 type: string
-                description: Server-sent Chat Completions chunks using choices[].delta.
+                description: |
+                  Server-sent Chat Completions chunks using choices[].delta.
+                  With stream_options.include_usage, read through the final
+                  usage report before closing the connection.
         "401":
           $ref: "#/components/responses/AuthenticationError"
         default:
@@ -96,7 +104,11 @@ paths:
       summary: Create a response
       description: |
         Sends an OpenAI-style Responses request. Set stream to false for JSON or
-        true for named server-sent Responses events. A request may incur charges.
+        true for named server-sent Responses events. Use service_tier for an
+        explicit processing-tier request. Codex OAuth routes can request built-in
+        search with tools: [{"type": "web_search"}]. Tier and search access
+        depend on the selected model, route, and account. A request may incur
+        charges.
       tags: [Responses]
       requestBody:
         required: true
@@ -118,7 +130,9 @@ paths:
             text/event-stream:
               schema:
                 type: string
-                description: Named server-sent Responses events.
+                description: |
+                  Named server-sent Responses events. Continue through a terminal
+                  response event to inspect status, usage, and actual service tier.
         "401":
           $ref: "#/components/responses/AuthenticationError"
         default:
@@ -257,6 +271,15 @@ components:
             include_usage:
               type: boolean
           additionalProperties: true
+        service_tier:
+          $ref: "#/components/schemas/RequestedServiceTier"
+        web_search_options:
+          type: object
+          description: |
+            Earth API Chat compatibility extension for Codex OAuth web search.
+            An empty object opts in. Availability depends on the route, account,
+            and model; parameter acceptance is not proof that a search ran.
+          additionalProperties: true
         tools:
           type: array
           description: Availability varies by model; the application executes custom tools.
@@ -282,6 +305,15 @@ components:
             additionalProperties: true
         usage:
           type: object
+          description: Final validated token usage when supplied by the provider.
+          additionalProperties: true
+        service_tier:
+          $ref: "#/components/schemas/ActualServiceTier"
+        provider_data:
+          type: object
+          description: |
+            Earth API compatibility extensions, including Codex web-search call
+            metadata when available. Applications must tolerate absent fields.
           additionalProperties: true
       additionalProperties: true
     ResponseRequest:
@@ -299,9 +331,14 @@ components:
         stream:
           type: boolean
           default: false
+        service_tier:
+          $ref: "#/components/schemas/RequestedServiceTier"
         tools:
           type: array
-          description: Availability varies by model; the application executes custom tools.
+          description: |
+            Availability varies by model and route. Custom function tools are
+            executed by the application. On Codex OAuth routes, a built-in search
+            can be requested with an item whose type is web_search.
           items:
             type: object
             additionalProperties: true
@@ -315,6 +352,9 @@ components:
           type: string
         model:
           type: string
+        status:
+          type: string
+          description: Terminal state when supplied by the provider.
         output:
           type: array
           items:
@@ -322,8 +362,28 @@ components:
             additionalProperties: true
         usage:
           type: object
+          description: |
+            Final validated token usage when supplied by the provider. Incomplete
+            or failed terminal responses can still report billable usage.
           additionalProperties: true
+        service_tier:
+          $ref: "#/components/schemas/ActualServiceTier"
       additionalProperties: true
+    RequestedServiceTier:
+      type: string
+      enum: [default, fast, priority]
+      description: |
+        Requested OpenAI processing tier. fast and priority are accepted aliases
+        for supported routes. Acceptance does not prove priority processing;
+        inspect the terminal response service_tier when present. This field is
+        separate from reasoning effort and native Anthropic service tiers.
+    ActualServiceTier:
+      type: string
+      description: |
+        Processing tier reported by the upstream in the terminal response. A
+        final default value means standard processing. If this field is absent,
+        the client must not infer a tier from the request or elapsed time.
+      examples: [default, priority]
     AnthropicMessage:
       type: object
       required: [role, content]
