@@ -1,12 +1,12 @@
 {
-  "schema_version": "0.7",
+  "schema_version": "0.8",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "live",
   "observed_public_state": {
-    "checked_at": "2026-10-01T16:35:12+08:00",
+    "checked_at": "2026-10-01T18:36:40+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -119,12 +119,43 @@
       "completed_requests_http_200": 11,
       "terminal_usage_confirmed_after_keepalive": 8,
       "future_availability_guaranteed": false
+    },
+    "public_response_boundary": {
+      "deployed_at": "2026-10-01T17:43:58+08:00",
+      "production_worker_version": "b3623315-91de-4c63-9242-570edf81dddc",
+      "projected_interfaces": [
+        "Chat Completions",
+        "Responses",
+        "Anthropic Messages"
+      ],
+      "projected_transports": [
+        "JSON",
+        "SSE"
+      ],
+      "public_errors_sanitized": true,
+      "upstream_response_model_and_request_identifiers_removed": true,
+      "relay_generated_ids_preserve_public_response_relations": true,
+      "preserved_public_data": [
+        "assistant content",
+        "client tool arguments and results",
+        "URL citations and supported search traces",
+        "signed Anthropic thinking blocks",
+        "validated measured usage"
+      ],
+      "transient_failure_retry": {
+        "maximum_gateway_attempts": 2,
+        "retry_only_before_public_output": true,
+        "retry_after_public_output_started": false,
+        "requires_no_known_measured_usage": true,
+        "subject_to_provider_cooldown_deadline_and_available_account": true
+      },
+      "unknown_usage_policy": "Retain the request as pending when no validated terminal usage is available; do not estimate or erase usage."
     }
   },
   "usage_checks": [
     "Create or sign in to an Earth account and create a server-side API key.",
     "Review the live Models & pricing page, then query the authenticated model catalog before choosing a model.",
-    "Start with one minimal request and keep automatic retries disabled until the result and Usage record are understood.",
+    "Start with one minimal request. The gateway may retry one eligible transient failure before output begins; do not add immediate client-side retries until the result and Usage record are understood.",
     "Treat model discovery, parameter acceptance, actual service tier, and successful inference as separate checks.",
     "For streaming, read through the terminal event before deciding that usage is missing.",
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
@@ -136,6 +167,7 @@
     "For the historical claude-opus-5-5 check, automatic tool selection passed while the upstream rejected forced tool_choice modes.",
     "Fast parameter acceptance does not prove priority processing; use the terminal reported service tier when present.",
     "The keepalive observation is a bounded post-release check, not an uptime, capacity, latency, or future success-rate guarantee.",
+    "Response sanitization and gateway retry behavior were regression-tested before deployment; the 18:36 public smoke check did not send an authenticated generation request.",
     "This manifest does not promise complete upstream API equivalence, minimum prices, unlimited usage, an upstream partnership, or zero data retention.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
   ],
@@ -174,6 +206,23 @@
       "terminal_usage_confirmed_after_keepalive": 8,
       "excludes_in_flight_requests": true,
       "external_debit_delivery_separately_verified": false
+    },
+    "public_response_sanitization_and_retry": {
+      "deployed_at": "2026-10-01T17:43:58+08:00",
+      "production_worker_version": "b3623315-91de-4c63-9242-570edf81dddc",
+      "regression_tests_passed": 347,
+      "regression_tests_failed": 0,
+      "build_and_worker_dry_run_passed": true,
+      "public_smoke_checked_at": "2026-10-01T18:36:40+08:00",
+      "public_endpoints_http_200": [
+        "/",
+        "/docs",
+        "/models",
+        "/console",
+        "/api/public/models",
+        "/api/session"
+      ],
+      "authenticated_generation_sent_in_this_check": false
     }
   }
 }
