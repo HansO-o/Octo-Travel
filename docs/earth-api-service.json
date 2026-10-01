@@ -1,12 +1,12 @@
 {
-  "schema_version": "0.6",
+  "schema_version": "0.7",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "live",
   "observed_public_state": {
-    "checked_at": "2026-10-01T14:41:11+08:00",
+    "checked_at": "2026-10-01T16:35:12+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -25,7 +25,10 @@
     "general_availability_verified": true,
     "live_verification_required": true,
     "public_pricing_interface_live": true,
-    "public_pricing_loading_state_observed": false
+    "public_pricing_loading_state_observed": false,
+    "default_service_tier_observed": {
+      "gpt-6-astra": "fast"
+    }
   },
   "interfaces": [
     {
@@ -84,11 +87,14 @@
         "priority"
       ],
       "optional_per_model_default_available": true,
-      "existing_models_enabled_by_default": false,
       "explicit_request_value_takes_precedence": true,
       "actual_tier_evidence": "Terminal response service_tier when supplied by the upstream.",
       "account_and_model_dependent": true,
-      "speed_multiplier_guaranteed_by_relay": false
+      "speed_multiplier_guaranteed_by_relay": false,
+      "models_with_observed_default": [
+        "gpt-6-astra"
+      ],
+      "default_scope": "Earth API per-model configuration observed in the public catalog; recheck the live catalog before use."
     },
     "codex_oauth_web_search": {
       "responses_request": "tools: [{\"type\": \"web_search\"}]",
