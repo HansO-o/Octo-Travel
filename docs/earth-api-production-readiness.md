@@ -53,10 +53,10 @@ An Ogin login token, application-specific access key, upstream-provider key, and
 2. Select a model returned for the same account.
 3. Review its current account price.
 4. Use a documented output limit where supported, and verify that your selected endpoint/model enforces it. A token parameter is not an account spending cap.
-5. Disable automatic retries.
+5. Keep client-side retries disabled during the first verification. The gateway may perform one bounded internal retry for an eligible transient failure before any public output starts.
 6. Send one non-streaming request with non-sensitive test text.
-7. Record the UTC time, endpoint, model ID, HTTP status, request ID if supplied, and sanitized response shape.
-8. Review the resulting usage or billing record before increasing traffic.
+7. Record the UTC time, endpoint, configured Earth model ID, HTTP status, Earth API public request ID if supplied, optional `X-Earth-Retry-Count`, and sanitized response shape.
+8. Review the resulting usage or billing record before increasing traffic. If final verified usage is unavailable, treat the request as pending reconciliation rather than zero-cost.
 
 A client timeout stops the local wait. It does not prove that the server cancelled the request or that billing cannot occur.
 
@@ -70,7 +70,7 @@ Define and test:
 - a per-request output-token limit, with enforcement verified for the selected endpoint/model;
 - a concurrency limit;
 - a request timeout;
-- a retry policy that respects `Retry-After` and never retries non-idempotent work blindly;
+- a retry policy that accounts for the gateway's bounded pre-output retry, respects `Retry-After`, and never retries non-idempotent work blindly;
 - a per-user and global spending limit;
 - a daily alert threshold and a hard stop;
 - log redaction for authorization headers, account tokens, prompts, and response content;
@@ -92,7 +92,17 @@ Check the response shape your application actually consumes.
 
 An HTTP 200 response does not establish full SDK or upstream-provider equivalence. Keep feature flags narrow and test every parameter your application relies on.
 
-## 6. Prepare support evidence without leaking secrets
+## 6. Understand public response identity, retries, and usage
+
+Earth API projects public responses at the gateway boundary. Public response IDs and model fields identify the Earth API response and configured catalog model; clients should not depend on raw upstream response IDs, upstream model names, request identifiers, or internal routing metadata. Supported content, tool arguments, citations, signed thinking blocks, and verified usage remain part of their documented public shapes.
+
+For an eligible transient failure, the gateway can make at most two upstream attempts in total, and only before public output starts, while no measured usage is known and the retry remains within its cooldown, deadline, and account constraints. A successful response with `X-Earth-Retry-Count: 1` means one internal retry occurred. Once output starts, the gateway does not replay the request.
+
+Do not add an immediate client retry simply because this header is absent or present. After a final error, retry only when your operation is safe to repeat, the documented status is retryable, and any `Retry-After` delay has elapsed.
+
+For streaming responses, read through the terminal event before deciding whether usage is present. If no verifiable final usage is available, Earth API can leave the accounting state pending instead of inventing token counts or treating the request as free. A client timeout or interrupted stream does not prove cancellation and does not prove zero usage.
+
+## 7. Prepare support evidence without leaking secrets
 
 Before reporting a problem, collect:
 
@@ -101,7 +111,7 @@ Before reporting a problem, collect:
 - sanitized request shape;
 - model ID;
 - UTC timestamp;
-- HTTP status and provider request ID, if present;
+- HTTP status, Earth API public request ID if present, and `X-Earth-Retry-Count` if supplied;
 - expected and actual response shape;
 - whether streaming, tools, or retries were enabled.
 
@@ -113,7 +123,7 @@ A model appearing in the authenticated catalog does not prove that a generation 
 
 Preserve a supplied `Retry-After` value and request ID. Respect a specified retry delay. If no delay is supplied, avoid immediate retry loops; review Usage and report one sanitized failed attempt through the feedback form. A new key, different endpoint, or repeated request is not a verified fix.
 
-## 7. Recheck before each rollout
+## 8. Recheck before each rollout
 
 Model access, prices, limits, documentation, and account state can change. Repeat the catalog and pricing checks before:
 
