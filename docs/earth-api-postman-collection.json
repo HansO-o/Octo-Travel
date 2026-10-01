@@ -1,9 +1,14 @@
 {
   "info": {
     "_postman_id": "52aa5a7f-391c-4c26-b5f4-391a7d089e77",
-    "name": "Earth API — Launch Preview",
-    "description": "Importable request templates for the Earth API launch preview. Maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. At the latest public check, the Models & pricing route remained on its loading state and exposed no model or rate rows. Verify account access, the authenticated catalog, and current pricing before testing. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "name": "Earth API — Developer Collection",
+    "description": "Importable request templates for the live Earth API service, maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. The public product, documentation, console entry, model catalog, and pricing rows were rechecked on 1 October 2026. Verify your authenticated catalog, account access, balance, and current prices before testing. Generation is disabled until runGeneration is exactly YES; built-in search examples also require enableWebSearch to be exactly YES. The gateway may retry one eligible transient failure before any public output begins, but it does not replay after output starts. Do not add immediate client retry loops until you understand the response and Usage record. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": {
+      "major": 1,
+      "minor": 2,
+      "patch": 0
+    }
   },
   "auth": {
     "type": "bearer",
@@ -45,6 +50,18 @@
       "key": "anthropicVersion",
       "value": "2023-06-01",
       "type": "string"
+    },
+    {
+      "key": "serviceTier",
+      "value": "default",
+      "type": "string",
+      "description": "OpenAI-style processing-tier request: default, fast, or priority. Actual handling is shown only by the final service_tier when present."
+    },
+    {
+      "key": "enableWebSearch",
+      "value": "NO",
+      "type": "string",
+      "description": "Set exactly YES only after confirming the selected model and route support built-in search."
     }
   ],
   "item": [
@@ -72,6 +89,30 @@
               "const model = pm.collectionVariables.get('model');",
               "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
               "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}",
+              "const tier = pm.collectionVariables.get('serviceTier');",
+              "if (!['default', 'fast', 'priority'].includes(tier)) {",
+              "  throw new Error('Set serviceTier to default, fast, or priority.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const retryCount = pm.response.headers.get('X-Earth-Retry-Count');",
+              "pm.test('Gateway retry header is absent or 1', function () {",
+              "  pm.expect(retryCount === undefined || retryCount === null || retryCount === '1').to.be.true;",
+              "});",
+              "if ((pm.response.headers.get('Content-Type') || '').includes('application/json')) {",
+              "  const body = pm.response.json();",
+              "  pm.test('Public response omits known upstream metadata fields', function () {",
+              "    pm.expect(body).not.to.have.property('access_programs');",
+              "    pm.expect(body).not.to.have.property('upstreamId');",
+              "    pm.expect(body).not.to.have.property('upstreamRequestId');",
+              "  });",
               "}"
             ]
           }
@@ -88,7 +129,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"model\": \"{{model}}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Reply with one short greeting.\"\n    }\n  ],\n  \"stream\": false\n}",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Reply with one short greeting.\"\n    }\n  ],\n  \"service_tier\": \"{{serviceTier}}\",\n  \"stream\": false\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -96,7 +137,7 @@
           }
         },
         "url": "{{baseUrl}}/chat/completions",
-        "description": "Sends one non-streaming Chat Completions request and may incur a charge. The collection blocks this request until runGeneration is exactly YES and model is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+        "description": "Sends one non-streaming Chat Completions request and may incur a charge. It remains blocked until runGeneration is exactly YES and model is changed from the placeholder. serviceTier accepts default, fast, or priority; acceptance does not prove priority processing. The gateway may make one eligible internal retry before output begins. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
       },
       "response": []
     },
@@ -114,6 +155,30 @@
               "const model = pm.collectionVariables.get('model');",
               "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
               "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}",
+              "const tier = pm.collectionVariables.get('serviceTier');",
+              "if (!['default', 'fast', 'priority'].includes(tier)) {",
+              "  throw new Error('Set serviceTier to default, fast, or priority.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const retryCount = pm.response.headers.get('X-Earth-Retry-Count');",
+              "pm.test('Gateway retry header is absent or 1', function () {",
+              "  pm.expect(retryCount === undefined || retryCount === null || retryCount === '1').to.be.true;",
+              "});",
+              "if ((pm.response.headers.get('Content-Type') || '').includes('application/json')) {",
+              "  const body = pm.response.json();",
+              "  pm.test('Public response omits known upstream metadata fields', function () {",
+              "    pm.expect(body).not.to.have.property('access_programs');",
+              "    pm.expect(body).not.to.have.property('upstreamId');",
+              "    pm.expect(body).not.to.have.property('upstreamRequestId');",
+              "  });",
               "}"
             ]
           }
@@ -130,7 +195,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"model\": \"{{model}}\",\n  \"input\": \"Reply with one short greeting.\",\n  \"stream\": false\n}",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"input\": \"Reply with one short greeting.\",\n  \"service_tier\": \"{{serviceTier}}\",\n  \"stream\": false\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -138,7 +203,7 @@
           }
         },
         "url": "{{baseUrl}}/responses",
-        "description": "Sends one non-streaming Responses request and may incur a charge. The collection blocks this request until runGeneration is exactly YES and model is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+        "description": "Sends one non-streaming Responses request and may incur a charge. It remains blocked until runGeneration is exactly YES and model is changed from the placeholder. serviceTier accepts default, fast, or priority; acceptance does not prove priority processing. The gateway may make one eligible internal retry before output begins. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
       },
       "response": []
     },
@@ -156,6 +221,26 @@
               "const model = pm.collectionVariables.get('anthropicModel');",
               "if (!model || model === 'YOUR_AVAILABLE_ANTHROPIC_MODEL_ID') {",
               "  throw new Error('Choose an Anthropic-compatible model returned by the current catalog and set the collection variable anthropicModel.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const retryCount = pm.response.headers.get('X-Earth-Retry-Count');",
+              "pm.test('Gateway retry header is absent or 1', function () {",
+              "  pm.expect(retryCount === undefined || retryCount === null || retryCount === '1').to.be.true;",
+              "});",
+              "if ((pm.response.headers.get('Content-Type') || '').includes('application/json')) {",
+              "  const body = pm.response.json();",
+              "  pm.test('Public response omits known upstream metadata fields', function () {",
+              "    pm.expect(body).not.to.have.property('access_programs');",
+              "    pm.expect(body).not.to.have.property('upstreamId');",
+              "    pm.expect(body).not.to.have.property('upstreamRequestId');",
+              "  });",
               "}"
             ]
           }
@@ -193,7 +278,145 @@
           }
         },
         "url": "{{baseUrl}}/messages",
-        "description": "Sends one non-streaming Anthropic Messages request and may incur a charge. This request overrides the collection bearer auth and uses x-api-key plus anthropic-version. It remains blocked until runGeneration is exactly YES and anthropicModel is changed from the placeholder. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+        "description": "Sends one non-streaming Anthropic Messages request and may incur a charge. This request overrides collection bearer auth and uses x-api-key plus anthropic-version. It remains blocked until runGeneration is exactly YES and anthropicModel is changed from the placeholder. The gateway may make one eligible internal retry before output begins. Postman or network timeouts do not guarantee server-side cancellation or prevent billing."
+      },
+      "response": []
+    },
+    {
+      "name": "5 — Chat built-in web search (manual double opt-in; may charge)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.collectionVariables.get('runGeneration') !== 'YES') {",
+              "  throw new Error('Generation is disabled. Review pricing and availability, then set collection variable runGeneration to YES.');",
+              "}",
+              "const model = pm.collectionVariables.get('model');",
+              "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
+              "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}",
+              "const tier = pm.collectionVariables.get('serviceTier');",
+              "if (!['default', 'fast', 'priority'].includes(tier)) {",
+              "  throw new Error('Set serviceTier to default, fast, or priority.');",
+              "}",
+              "if (pm.collectionVariables.get('enableWebSearch') !== 'YES') {",
+              "  throw new Error('Built-in search is disabled. Confirm route and model support, then set enableWebSearch to YES.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const retryCount = pm.response.headers.get('X-Earth-Retry-Count');",
+              "pm.test('Gateway retry header is absent or 1', function () {",
+              "  pm.expect(retryCount === undefined || retryCount === null || retryCount === '1').to.be.true;",
+              "});",
+              "if ((pm.response.headers.get('Content-Type') || '').includes('application/json')) {",
+              "  const body = pm.response.json();",
+              "  pm.test('Public response omits known upstream metadata fields', function () {",
+              "    pm.expect(body).not.to.have.property('access_programs');",
+              "    pm.expect(body).not.to.have.property('upstreamId');",
+              "    pm.expect(body).not.to.have.property('upstreamRequestId');",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"What is one current official source for today's date? Cite the source.\"\n    }\n  ],\n  \"web_search_options\": {},\n  \"service_tier\": \"{{serviceTier}}\",\n  \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/chat/completions",
+        "description": "Codex OAuth route compatibility example using web_search_options. It requires both runGeneration and enableWebSearch to be exactly YES, a compatible model and route, and may incur search and generation charges. Search availability is not guaranteed for every account or model."
+      },
+      "response": []
+    },
+    {
+      "name": "6 — Responses built-in web search (manual double opt-in; may charge)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.collectionVariables.get('runGeneration') !== 'YES') {",
+              "  throw new Error('Generation is disabled. Review pricing and availability, then set collection variable runGeneration to YES.');",
+              "}",
+              "const model = pm.collectionVariables.get('model');",
+              "if (!model || model === 'YOUR_AVAILABLE_MODEL_ID') {",
+              "  throw new Error('Choose a model returned by the current model catalog and set the collection variable model.');",
+              "}",
+              "const tier = pm.collectionVariables.get('serviceTier');",
+              "if (!['default', 'fast', 'priority'].includes(tier)) {",
+              "  throw new Error('Set serviceTier to default, fast, or priority.');",
+              "}",
+              "if (pm.collectionVariables.get('enableWebSearch') !== 'YES') {",
+              "  throw new Error('Built-in search is disabled. Confirm route and model support, then set enableWebSearch to YES.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const retryCount = pm.response.headers.get('X-Earth-Retry-Count');",
+              "pm.test('Gateway retry header is absent or 1', function () {",
+              "  pm.expect(retryCount === undefined || retryCount === null || retryCount === '1').to.be.true;",
+              "});",
+              "if ((pm.response.headers.get('Content-Type') || '').includes('application/json')) {",
+              "  const body = pm.response.json();",
+              "  pm.test('Public response omits known upstream metadata fields', function () {",
+              "    pm.expect(body).not.to.have.property('access_programs');",
+              "    pm.expect(body).not.to.have.property('upstreamId');",
+              "    pm.expect(body).not.to.have.property('upstreamRequestId');",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"{{model}}\",\n  \"input\": \"What is one current official source for today's date? Cite the source.\",\n  \"tools\": [\n    {\n      \"type\": \"web_search\"\n    }\n  ],\n  \"service_tier\": \"{{serviceTier}}\",\n  \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/responses",
+        "description": "Codex OAuth route example using the built-in web_search tool. It requires both runGeneration and enableWebSearch to be exactly YES, a compatible model and route, and may incur search and generation charges. Search availability is not guaranteed for every account or model."
       },
       "response": []
     }
