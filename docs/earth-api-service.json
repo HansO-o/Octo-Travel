@@ -1,12 +1,12 @@
 {
-  "schema_version": "0.5",
+  "schema_version": "0.6",
   "name": "Earth API",
   "description": "Independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats.",
   "canonical_url": "https://api.earth.icu",
   "base_url": "https://api.earth.icu/v1",
   "launch_status": "live",
   "observed_public_state": {
-    "checked_at": "2026-09-30T22:27:56+08:00",
+    "checked_at": "2026-10-01T14:41:11+08:00",
     "english_product_page_live": true,
     "english_documentation_live": true,
     "console_entry_present": true,
@@ -14,9 +14,12 @@
     "public_model_catalog_published": true,
     "public_pricing_rows_present": true,
     "published_model_ids_observed": [
-      "claude-opus-5-5",
-      "gpt-6-sol"
+      "gpt-6-astra",
+      "gpt-6-luna",
+      "gpt-6.1-sol",
+      "gpt-66-astra"
     ],
+    "model_id_scope": "Earth API configured catalog IDs; not a claim about upstream official model names.",
     "pricing_currency": "USD",
     "pricing_unit": "per million tokens",
     "general_availability_verified": true,
@@ -60,6 +63,9 @@
     "overview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-overview.md",
     "production_readiness": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-production-readiness.md",
     "integration_guide": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api.md",
+    "compatibility_snapshot": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-compatibility.md",
+    "fast_and_final_usage": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-fast-and-usage.md",
+    "built_in_web_search": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-web-search.md",
     "openapi_preview": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-openapi.yaml",
     "postman_collection": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-postman-collection.json",
     "llms_index": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/llms.txt",
@@ -67,37 +73,101 @@
     "anthropic_messages_python": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py",
     "anthropic_messages_node": "https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-anthropic-messages.mjs"
   },
+  "capability_updates": {
+    "openai_service_tier": {
+      "request_interfaces": [
+        "Chat Completions",
+        "Responses"
+      ],
+      "request_values": [
+        "fast",
+        "priority"
+      ],
+      "optional_per_model_default_available": true,
+      "existing_models_enabled_by_default": false,
+      "explicit_request_value_takes_precedence": true,
+      "actual_tier_evidence": "Terminal response service_tier when supplied by the upstream.",
+      "account_and_model_dependent": true,
+      "speed_multiplier_guaranteed_by_relay": false
+    },
+    "codex_oauth_web_search": {
+      "responses_request": "tools: [{\"type\": \"web_search\"}]",
+      "chat_compatibility_extension": "web_search_options: {}",
+      "live_checked_at": "2026-10-01T10:47:00+08:00",
+      "live_checks_passed": 4,
+      "checked_transports": [
+        "Responses JSON",
+        "Responses SSE",
+        "Chat Completions JSON",
+        "Chat Completions SSE"
+      ],
+      "account_model_and_route_dependent": true
+    },
+    "usage_reconciliation": {
+      "unknown_usage_blocks_later_or_concurrent_requests": false,
+      "billing_source": "Validated final provider usage; no estimated token counts.",
+      "historical_missing_usage_reconstructed": false,
+      "codex_keepalive_compatibility_fixed_at": "2026-10-01T12:31:12+08:00",
+      "bounded_live_window_ended_at": "2026-10-01T12:36:09+08:00",
+      "completed_requests_observed": 11,
+      "completed_requests_http_200": 11,
+      "terminal_usage_confirmed_after_keepalive": 8,
+      "future_availability_guaranteed": false
+    }
+  },
   "usage_checks": [
     "Create or sign in to an Earth account and create a server-side API key.",
     "Review the live Models & pricing page, then query the authenticated model catalog before choosing a model.",
     "Start with one minimal request and keep automatic retries disabled until the result and Usage record are understood.",
-    "Treat model discovery and successful inference as separate checks.",
+    "Treat model discovery, parameter acceptance, actual service tier, and successful inference as separate checks.",
+    "For streaming, read through the terminal event before deciding that usage is missing.",
     "Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code."
   ],
   "limitations": [
     "The public product page, English documentation, OGS-backed sign-in and account-creation entry, model pricing rows, and paid model requests are live.",
-    "The catalog and live validation included claude-opus-5-5 and gpt-6-sol; current account access and upstream capacity can still differ.",
-    "For claude-opus-5-5, automatic tool selection was validated; the upstream rejected forced tool_choice modes during launch testing.",
-    "This manifest records a successful launch check, not an uptime, capacity, future pricing, complete upstream API-equivalence, or data-retention guarantee.",
+    "The current configured catalog IDs and live prices can change; query the authenticated model catalog and pricing page before use.",
+    "The 30 September validation of claude-opus-5-5 and gpt-6-sol is a historical launch snapshot, not a current catalog or access promise.",
+    "For the historical claude-opus-5-5 check, automatic tool selection passed while the upstream rejected forced tool_choice modes.",
+    "Fast parameter acceptance does not prove priority processing; use the terminal reported service tier when present.",
+    "The keepalive observation is a bounded post-release check, not an uptime, capacity, latency, or future success-rate guarantee.",
+    "This manifest does not promise complete upstream API equivalence, minimum prices, unlimited usage, an upstream partnership, or zero data retention.",
     "Earth API is independent and does not claim an official relationship with an upstream model provider."
   ],
   "operator_disclosure": "Published by the Earth API operator.",
-  "content_disclosure": "Prepared with AI assistance and reviewed against the live product, pricing, and end-to-end API checks on 30 September 2026.",
-  "end_to_end_validation": {
-    "checked_at": "2026-09-30T22:27:56+08:00",
-    "base_url": "https://api.earth.icu/v1",
-    "passed": 13,
-    "failed": 0,
-    "validated": [
-      "authenticated model discovery",
-      "invalid-key and invalid-model errors",
-      "OpenAI Chat Completions JSON and SSE",
-      "OpenAI Responses JSON and SSE",
-      "OpenAI-compatible function calls",
-      "Anthropic-compatible Chat Completions JSON and SSE",
-      "native Anthropic Messages JSON and SSE",
-      "Claude automatic tool calls",
-      "final provider usage reporting"
-    ]
+  "content_disclosure": "Prepared with AI assistance and reviewed against the live product, catalog, pricing, public documentation, and dated validation results through 1 October 2026.",
+  "validation_snapshots": {
+    "launch": {
+      "checked_at": "2026-09-30T22:27:56+08:00",
+      "base_url": "https://api.earth.icu/v1",
+      "passed": 13,
+      "failed": 0,
+      "validated": [
+        "authenticated model discovery",
+        "invalid-key and invalid-model errors",
+        "OpenAI Chat Completions JSON and SSE",
+        "OpenAI Responses JSON and SSE",
+        "OpenAI-compatible function calls",
+        "Anthropic-compatible Chat Completions JSON and SSE",
+        "native Anthropic Messages JSON and SSE",
+        "Claude automatic tool calls",
+        "final provider usage reporting"
+      ]
+    },
+    "codex_web_search": {
+      "checked_at": "2026-10-01T10:47:00+08:00",
+      "model_id": "gpt-6.1-sol",
+      "passed": 4,
+      "failed": 0,
+      "scope": "Codex OAuth route only"
+    },
+    "codex_keepalive_usage": {
+      "window_started_at": "2026-10-01T12:31:12+08:00",
+      "window_ended_at": "2026-10-01T12:36:09+08:00",
+      "completed_requests_observed": 11,
+      "http_200": 11,
+      "terminal_usage_confirmed_after_keepalive": 8,
+      "excludes_in_flight_requests": true,
+      "external_debit_delivery_separately_verified": false
+    }
   }
 }
