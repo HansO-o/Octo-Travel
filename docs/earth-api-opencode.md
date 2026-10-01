@@ -57,6 +57,7 @@ A successful model selection does not prove that the account has enough balance 
 - Unknown or upstream-unsupported optional parameters are ignored when they cannot be translated, rather than blocking an otherwise usable request.
 - Output-token and sampling fields can be accepted without taking effect on every upstream. Do not treat them as hard spending caps.
 - One request awaiting usage reconciliation does not globally block later or concurrent requests on the same key or account. Charges may settle asynchronously, so recent usage and balance displays can briefly lag.
+- Usage pending means a validated final token report has not been recorded, rather than a token-counting job still running. See [Fast mode and final usage](earth-api-fast-and-usage.md) for the dated Codex keepalive fix and streaming diagnostics.
 - Streaming, tools, structured output, and reasoning behavior vary by model. Validate the exact workflow you need.
 - Keep automatic retry loops conservative. A local timeout does not prove server-side cancellation or that a request was not billed.
 

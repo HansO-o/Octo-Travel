@@ -12,6 +12,14 @@ Four live `gpt-6.1-sol` searches passed through Responses JSON/SSE and Chat Comp
 
 See the [built-in web-search guide](earth-api-web-search.md) for requests, sources, streaming expectations, and scope. These are dated test results, not a service-level or permanent model-availability promise.
 
+## Service tiers and final usage update — 1 October 2026
+
+Earth API now supports an optional per-model Fast default for OpenAI routes, with an explicit request `service_tier` taking precedence. Responses-to-Chat conversion preserves the actual upstream-reported tier; account-level Fast access has not been inferred from parameter acceptance or offline tests.
+
+A Codex keepalive event previously interrupted some converted streams before their final token report. The 12:31 Asia/Shanghai release recognizes this transport event and retains final measured usage as the billing source. Through 12:36, all 11 completed requests in the new deployment returned HTTP 200, and eight explicitly recorded terminal usage after keepalive events. This short observation excludes running requests and does not establish a future availability guarantee. Historical missing usage is not reconstructed or estimated.
+
+See [Fast mode and final usage](earth-api-fast-and-usage.md) for examples, tier boundaries, and pending-usage troubleshooting.
+
 ## Verified interfaces
 
 | Capability | OpenAI-style route | Anthropic-style route | Launch check |

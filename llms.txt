@@ -10,7 +10,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 
 - [Product page](https://api.earth.icu): English landing page with additional language options.
 - [Official documentation](https://api.earth.icu/docs): Quickstart, OpenAI Responses and Chat Completions, Anthropic Messages, streaming, usage, key management, and errors.
-- [Models & pricing](https://api.earth.icu/models): The public page currently lists `gpt-6-astra`, `gpt-6-luna`, and `gpt-6.1-sol`, with USD rates per million tokens. The earlier Claude launch-validation result is historical and does not imply current catalog availability; the catalog and rates can change.
+- [Models & pricing](https://api.earth.icu/models): Live configured model IDs and USD rates per million tokens; query the authenticated `GET /v1/models` catalog for your account instead of relying on a fixed repository list. The earlier Claude launch-validation result is historical and does not imply current catalog availability; the catalog and rates can change.
 - [Console](https://api.earth.icu/console): OGS-backed workspace and public sign-up entry.
 
 ## Repository documentation
@@ -25,6 +25,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 - [Langflow quickstart](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-langflow.md): OpenAI Compatible provider setup, live model discovery, secret handling, component boundaries, and troubleshooting.
 - [Qwen Code quickstart](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-qwen-code.md): OpenAI-compatible provider configuration, Chat Completions and Responses route selection, environment-key handling, approval cautions, and troubleshooting.
 - [Built-in web-search guide](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-web-search.md): Codex OAuth search through Responses and the Chat compatibility extension, search output verification, citations, and upstream boundaries.
+- [Fast mode and final usage](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-fast-and-usage.md): Per-request service tiers, optional operator defaults, actual-tier verification, streaming token reports, and Usage pending troubleshooting.
 - [Production-readiness checklist](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-production-readiness.md): Go/no-go gates for account access, models, pricing, authentication, secrets, spending controls, compatibility, support evidence, and rollback.
 - [Compatibility snapshot](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-compatibility.md): Endpoint-by-endpoint launch validation, streaming and tool-call coverage, authentication mapping, and known parameter boundaries.
 - [Machine-readable service metadata](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/earth-api-service.json): Repository-hosted launch status, canonical URLs, interface paths, resources, safety checks, limitations, and disclosures.
