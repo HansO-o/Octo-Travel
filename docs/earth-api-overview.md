@@ -2,7 +2,7 @@
 
 [Earth API](https://api.earth.icu) is an independent, maintainer-operated AI API relay for developers using OpenAI- and Anthropic-style request formats. The documented base URL is `https://api.earth.icu/v1`.
 
-> **Live launch — verified 30 September 2026 at 22:27 (Asia/Shanghai):** the English product page, official documentation, OGS-backed console and sign-up entry, multilingual selector, public pricing rows, authenticated model catalog, and paid requests are live. Thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This is a launch verification, not an uptime or capacity guarantee.
+> **Live launch:** the English product page, official documentation, OGS-backed console and sign-up entry, multilingual selector, public pricing rows, authenticated model catalog, and paid requests were verified at launch on 30 September 2026. A public-surface check on 1 October 2026 at 22:39 (Asia/Shanghai) returned HTTP 200 for the product page, docs, models page, console, public model metadata, and anonymous session endpoint. This is launch and reachability evidence, not an uptime or capacity guarantee.
 
 ## What developers can review now
 
@@ -12,7 +12,8 @@
 - A [production-readiness checklist](earth-api-production-readiness.md) with concrete go/no-go gates for account access, models, pricing, secrets, spending controls, compatibility, support evidence, and rollback.
 - A machine-readable [service metadata manifest](earth-api-service.json) with canonical URLs, observed launch status, interface paths, resources, safety checks, and limitations.
 - A machine-readable [OpenAPI 3.1 reference](earth-api-openapi.yaml).
-- An importable [Postman collection](earth-api-postman-collection.json) with opt-in templates for Chat Completions, Responses, and Anthropic Messages.
+- An importable [Postman collection](earth-api-postman-collection.json) with explicit opt-in templates for Chat Completions, Responses, Anthropic Messages, Fast/service-tier requests, and OpenAI-style web search.
+- A focused [Fast and usage troubleshooting guide](earth-api-fast-and-usage.md) explaining configured tiers, terminal usage, streaming heartbeats, and unresolved accounting states.
 - Safe examples for [Node.js](examples/earth-api-node.mjs), [JavaScript SDK](examples/earth-api-openai-sdk.mjs), [Python SDK](examples/earth_api_openai_sdk.py), [Anthropic Messages Python](examples/earth_api_anthropic_messages.py), [Anthropic Messages Node.js](examples/earth-api-anthropic-messages.mjs), [Go](examples/earth-api-go.go), and [PHP](examples/earth-api-php.php).
 - A detailed [integration guide](earth-api.md) and [structured feedback form](https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml).
 
@@ -23,8 +24,14 @@ The examples list the authenticated model catalog by default. Generation require
 1. Confirm that account access and API-key creation are available to you.
 2. Query the authenticated `/models` endpoint and select an enabled model ID.
 3. Review the current account price before generating.
-4. Start with a minimal, non-streaming request and no automatic retries.
+4. Start with a minimal, non-streaming request and no automatic client retries. For an eligible transient failure, the gateway may retry once before public output starts; a successful response can report `X-Earth-Retry-Count: 1`.
 5. Keep API keys, login tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code.
+
+## Public response and usage boundaries
+
+Earth API returns its own public response IDs and configured catalog model IDs. Clients should not depend on raw upstream response IDs, upstream model names, request identifiers, or internal routing metadata. Once public output starts, the gateway does not replay the request.
+
+For streaming responses, read through the terminal event before deciding whether final usage is present. If verifiable terminal usage is unavailable, accounting can remain pending; missing usage must not be interpreted as zero tokens or a free request.
 
 The launch check does not guarantee current model access, future pricing, uptime, capacity, complete upstream API equivalence, or data-retention behavior. Earth API is independent and does not claim an official relationship with an upstream model provider.
 
