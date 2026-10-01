@@ -63,7 +63,7 @@ Edit the user-level `~/.qwen/settings.json`. Merge the following `modelProviders
 
 The `baseUrl` must be the `/v1` root, not the full `/v1/chat/completions` or `/v1/responses` path. Qwen Code appends the request path for the selected wire format.
 
-As checked on 1 October 2026 at 09:44 Asia/Shanghai, the public Earth API page listed `gpt-6-astra`, `gpt-6-luna`, and `gpt-6.1-sol`, with rates in USD per million tokens. The example uses one dated model ID for clarity. Replace both `id` values with a model that your current account can discover and use.
+As checked on 1 October 2026 at 09:43 Asia/Shanghai, the public Earth API page listed `gpt-6-astra`, `gpt-6-luna`, and `gpt-6.1-sol`, with rates in USD per million tokens. The example uses one dated model ID for clarity. Replace both `id` values with a model that your current account can discover and use.
 
 Qwen Code supports the same model ID and Base URL on two routes when `wireApi` differs. It does not automatically fall back from one transport to the other when a request fails.
 
