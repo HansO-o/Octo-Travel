@@ -6,6 +6,12 @@ Base URL: `https://api.earth.icu/v1`
 
 Before integrating, query `GET /models` with your own Earth API key and review the current [Models & pricing page](https://api.earth.icu/models). Model access, upstream capacity, parameters, and rates can change.
 
+## Web search update — 1 October 2026
+
+Four live `gpt-6.1-sol` searches passed through Responses JSON/SSE and Chat Completions JSON/SSE, returning completed search calls, URL citations, and final measured usage. This applies to Codex OAuth routes; it does not claim API-key or Anthropic hosted-search compatibility. Responses uses `tools: [{"type":"web_search"}]`; Chat can use `web_search_options: {}` as an Earth API extension. Legacy preview names are normalized. Search activity is server-executed, and Chat clients receive it under `provider_data.openai.web_search_calls`, alongside standard URL annotations.
+
+See the [built-in web-search guide](earth-api-web-search.md) for requests, sources, streaming expectations, and scope. These are dated test results, not a service-level or permanent model-availability promise.
+
 ## Verified interfaces
 
 | Capability | OpenAI-style route | Anthropic-style route | Launch check |
@@ -51,3 +57,4 @@ Use each endpoint's native response and streaming format. Chat Completions uses 
 Keep API keys, account tokens, billing details, private prompts, personal data, and production secrets out of public issues and client-side code.
 
 Published by the Earth API operator. Prepared with AI assistance and reviewed against the live launch-validation results.
+

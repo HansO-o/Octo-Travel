@@ -6,11 +6,11 @@ Octo 依赖，也不读取 Octo Core 的文件或 `node_modules`。
 
 ## Earth API developer quickstart
 
-Start with the [one-page Earth API developer overview](docs/earth-api-overview.md) for the current launch status, supported resources, safety checks, and operator disclosure. OpenCode users can follow the dedicated [Earth API + OpenCode quickstart](docs/earth-api-opencode.md). Aider users can follow the [Earth API + aider quickstart](docs/earth-api-aider.md). Continue users can follow the [Earth API + Continue quickstart](docs/earth-api-continue.md). Cline users can follow the [Earth API + Cline quickstart](docs/earth-api-cline.md). Open WebUI administrators can follow the [Earth API + Open WebUI quickstart](docs/earth-api-open-webui.md). Langflow users can follow the [Earth API + Langflow quickstart](docs/earth-api-langflow.md). Qwen Code users can follow the [Earth API + Qwen Code quickstart](docs/earth-api-qwen-code.md). Before production traffic, use the [production-readiness checklist](docs/earth-api-production-readiness.md) to verify account access, models, pricing, secrets, spending controls, compatibility, and rollback.
+Start with the [one-page Earth API developer overview](docs/earth-api-overview.md) for the current launch status, supported resources, safety checks, and operator disclosure. OpenCode users can follow the dedicated [Earth API + OpenCode quickstart](docs/earth-api-opencode.md). Aider users can follow the [Earth API + aider quickstart](docs/earth-api-aider.md). Continue users can follow the [Earth API + Continue quickstart](docs/earth-api-continue.md). Cline users can follow the [Earth API + Cline quickstart](docs/earth-api-cline.md). Open WebUI administrators can follow the [Earth API + Open WebUI quickstart](docs/earth-api-open-webui.md). Langflow users can follow the [Earth API + Langflow quickstart](docs/earth-api-langflow.md). Qwen Code users can follow the [Earth API + Qwen Code quickstart](docs/earth-api-qwen-code.md). For Codex OAuth routes, see the [Earth API built-in web-search guide](docs/earth-api-web-search.md) for Responses requests, the Chat compatibility extension, and citations. Before production traffic, use the [production-readiness checklist](docs/earth-api-production-readiness.md) to verify account access, models, pricing, secrets, spending controls, compatibility, and rollback.
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 1 October 2026 at 09:43 (Asia/Shanghai):
+Current public status, checked 1 October 2026 at 10:46 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
@@ -149,3 +149,4 @@ npm run deploy
 
 Cloudflare Pages 项目名为 `octo-travel-app`，输出目录为 `public`。本项目不包含
 真实密钥，也不会创建、导入或修改其他 Octo 项目。
+
