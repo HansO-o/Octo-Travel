@@ -19,7 +19,7 @@ Tools, structured output, streaming, web search, images, audio, embeddings, Real
 
 ## Prerequisites
 
-- Java 17 or newer
+- Java 8 or newer
 - an Earth API key stored outside source control
 - a current model ID returned for the same account
 - current pricing reviewed at [api.earth.icu/models](https://api.earth.icu/models)
@@ -98,7 +98,7 @@ public final class EarthChat {
 
     private static String requiredEnv(String name) {
         String value = System.getenv(name);
-        if (value == null || value.isBlank()) {
+        if (value == null || value.trim().isEmpty()) {
             throw new IllegalStateException(name + " is required");
         }
         return value;
@@ -152,7 +152,7 @@ public final class EarthResponses {
 
     private static String requiredEnv(String name) {
         String value = System.getenv(name);
-        if (value == null || value.isBlank()) {
+        if (value == null || value.trim().isEmpty()) {
             throw new IllegalStateException(name + " is required");
         }
         return value;
