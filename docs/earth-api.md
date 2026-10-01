@@ -296,7 +296,7 @@ Roamline's current `/api/chat` route checks the request's `Origin`, which is not
 | Result | Check |
 | --- | --- |
 | `AI service is not configured` | Set `OPENAI_API_KEY` in the environment actually serving the app, then redeploy. |
-| `AI provider request failed` | Check the endpoint, key, account balance, available model ID, and provider error message. |
+| `AI provider request failed` | Check the gateway error code, request ID, `Retry-After`, account balance, and current model access. Upstream response details are not included in the public error. |
 | `AI provider returned an invalid response` | Use a model and endpoint that return standard text Chat Completions JSON. |
 | `Streaming is not supported` | Omit `stream` or set it to `false`. |
 | `Unauthorized` from Roamline | Use the same-origin browser UI, or send your `APP_ACCESS_KEY` to Roamline's private route. |
@@ -304,9 +304,9 @@ Roamline's current `/api/chat` route checks the request's `Origin`, which is not
 
 ### Catalog access and generation errors
 
-Model discovery and inference are separate checks. A catalog entry is not proof that a generation request can be served. If the error contains `upstream_unavailable`, it does not by itself prove an invalid key or exhausted quota. If an HTTP 429 contains only `rate_limit_error` or a generic message, the exact limiting condition is still unknown.
+Model discovery and inference are separate checks. A catalog entry is not proof that a generation request can be served. **Verified 1 October 2026:** when a transient upstream failure occurs before any response content is sent, the gateway makes at most one internal retry, subject to its deadline and provider cooldown. If that attempt also fails, the public response contains a sanitized gateway error; raw upstream response fields and messages are not forwarded. The gateway does not replay a request after response content has started.
 
-Keep the returned request ID and `Retry-After` value, if present. Respect the supplied delay, review Usage before resending, and disable immediate automatic retry loops. A timeout, dropped stream, or error does not by itself establish whether the request was billed. A request working in a different client or channel is useful support context, but does not verify this API route.
+Keep the returned request ID and `Retry-After` value, if present, and review Usage before sending another request. A network interruption can leave usage pending when no final measured usage was received; that does not prove the upstream did no work or that the request was not billed. Avoid immediate client-side retry loops.
 
 ## Share integration feedback
 
