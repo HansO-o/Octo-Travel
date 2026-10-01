@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Earth API
-  version: 1.1.0
+  version: 1.2.0
   summary: Live API specification for an independent AI API relay
   description: |
     Machine-readable integration reference for Earth API, an independent
@@ -21,12 +21,24 @@ info:
     name: Earth API integration feedback
     url: https://github.com/HansO-o/Octo-Travel/issues/new?template=earth-api-integration.yml
   x-launch-status: live
-  x-last-reviewed: "2026-10-01T15:32:48+08:00"
+  x-last-reviewed: "2026-10-01T19:40:00+08:00"
 servers:
   - url: https://api.earth.icu/v1
     description: Documented Earth API public host; verify account, models, and pricing before use
 security:
   - bearerAuth: []
+x-earth-response-boundary:
+  public-field-projection: true
+  upstream-identifiers-forwarded: false
+  public-model-id-source: Earth API configured catalog
+  public-errors-sanitized: true
+  maximum-gateway-attempts: 2
+  retry-only-before-public-output: true
+  retry-after-public-output-started: false
+  retry-requires-no-known-measured-usage: true
+  retry-subject-to-cooldown-deadline-and-account-availability: true
+  unknown-usage-estimated-or-erased: false
+  deployed-at: "2026-10-01T17:43:58+08:00"
 tags:
   - name: Models
     description: Discover model identifiers available to the authenticated account.
@@ -66,7 +78,9 @@ paths:
         processing-tier request. The web_search_options object is an Earth API
         compatibility extension for Codex OAuth routes. Tier and search access
         depend on the selected model, route, and account. A request may incur
-        charges.
+        charges. Public responses use Earth API model and response identifiers.
+        One eligible transient failure may be retried internally before any
+        public output begins; the gateway does not replay after output starts.
       tags: [Chat Completions]
       requestBody:
         required: true
@@ -83,6 +97,9 @@ paths:
       responses:
         "200":
           description: Completion JSON or event stream, selected by the request
+          headers:
+            X-Earth-Retry-Count:
+              $ref: "#/components/headers/EarthRetryCount"
           content:
             application/json:
               schema:
@@ -108,7 +125,9 @@ paths:
         explicit processing-tier request. Codex OAuth routes can request built-in
         search with tools: [{"type": "web_search"}]. Tier and search access
         depend on the selected model, route, and account. A request may incur
-        charges.
+        charges. Public responses use Earth API model and response identifiers.
+        One eligible transient failure may be retried internally before any
+        public output begins; the gateway does not replay after output starts.
       tags: [Responses]
       requestBody:
         required: true
@@ -123,6 +142,9 @@ paths:
       responses:
         "200":
           description: Response JSON or named event stream, selected by the request
+          headers:
+            X-Earth-Retry-Count:
+              $ref: "#/components/headers/EarthRetryCount"
           content:
             application/json:
               schema:
@@ -144,7 +166,10 @@ paths:
       description: |
         Sends an Anthropic-style Messages request. Use an Earth API model-access
         key in x-api-key and include anthropic-version: 2023-06-01. A request
-        may incur charges.
+        may incur charges. Public responses use Earth API model and response
+        identifiers. One eligible transient failure may be retried internally
+        before any public output begins; the gateway does not replay after
+        output starts.
       tags: [Messages]
       security:
         - anthropicApiKey: []
@@ -171,6 +196,9 @@ paths:
       responses:
         "200":
           description: Anthropic-style message response
+          headers:
+            X-Earth-Retry-Count:
+              $ref: "#/components/headers/EarthRetryCount"
           content:
             application/json:
               schema:
@@ -197,6 +225,15 @@ components:
       in: header
       name: x-api-key
       description: Earth API model-access key for the Anthropic Messages endpoint.
+  headers:
+    EarthRetryCount:
+      description: |
+        Present with value 1 when a successful response was produced by one
+        eligible internal retry. Absence does not prove whether a provider was
+        contacted, and clients should not add an immediate retry loop.
+      schema:
+        type: integer
+        enum: [1]
   responses:
     AuthenticationError:
       description: Missing or invalid Earth API model-access key
@@ -205,7 +242,9 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
     ApiError:
-      description: API, account, model, balance, rate-limit, or upstream error
+      description: |
+        Sanitized API, account, model, balance, rate-limit, or gateway error.
+        Raw upstream response details and identifiers are not forwarded.
       content:
         application/json:
           schema:
@@ -292,12 +331,14 @@ components:
       properties:
         id:
           type: string
+          description: Earth API public response identifier.
         object:
           type: string
         created:
           type: integer
         model:
           type: string
+          description: Earth API configured catalog ID used for this response.
         choices:
           type: array
           items:
@@ -348,10 +389,12 @@ components:
       properties:
         id:
           type: string
+          description: Earth API public response identifier.
         object:
           type: string
         model:
           type: string
+          description: Earth API configured catalog ID used for this response.
         status:
           type: string
           description: Terminal state when supplied by the provider.
@@ -421,12 +464,14 @@ components:
       properties:
         id:
           type: string
+          description: Earth API public message identifier.
         type:
           type: string
         role:
           type: string
         model:
           type: string
+          description: Earth API configured catalog ID used for this response.
         content:
           type: array
           items: {}
@@ -446,6 +491,7 @@ components:
           properties:
             message:
               type: string
+              description: Sanitized public error message; raw upstream details are not forwarded.
             type:
               type: string
             param: {}
