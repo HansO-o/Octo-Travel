@@ -10,7 +10,7 @@ Start with the [one-page Earth API developer overview](docs/earth-api-overview.m
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 2 October 2026 at 17:38 (Asia/Shanghai):
+Current public status, checked 2 October 2026 at 18:35 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
@@ -40,7 +40,7 @@ The [Anthropic Messages Node.js example](docs/examples/earth-api-anthropic-messa
 
 The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags; generation supports optional `-fast`, terminal Usage, actual-tier output, Earth-facing request IDs, and sanitized HTTP errors.
 
-The [PHP 8.2 dependency-free example](docs/examples/earth-api-php.php) lists the authenticated model catalog by default and requires explicit `--generate --model=...` flags before it sends one Chat Completions or Responses request.
+The [PHP 8.2 dependency-free example](docs/examples/earth-api-php.php) lists model IDs by default and requires explicit `--generate --model=...` before Chat Completions or Responses. It supports optional Fast requests and reports the actual service tier, terminal Usage, and Earth-facing request ID while sanitizing HTTP errors and recursively rejecting known upstream-only metadata.
 
 AI coding tools can use the repository-root [Earth API `llms.txt` index](llms.txt) to find the guide, specification, examples, and feedback links. It is repository-scoped, not a deployment at `api.earth.icu/llms.txt`.
 
