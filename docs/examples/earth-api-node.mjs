@@ -2,12 +2,23 @@
 
 const BASE_URL = "https://api.earth.icu/v1";
 const runGeneration = process.env.EARTH_RUN_GENERATION === "1";
+const requestFast = process.env.EARTH_FAST === "1";
 const apiKey = process.env.EARTH_API_KEY;
 const selectedModel = process.env.EARTH_MODEL;
 
+class EarthHttpError extends Error {
+  constructor(status, requestId) {
+    super("Earth API returned a non-success HTTP response.");
+    this.status = status;
+    this.requestId = requestId;
+  }
+}
+
+class SafeExampleError extends Error {}
+
 if (process.argv.includes("--help")) {
   console.log(`
-Earth API Node.js 22 preview example
+Earth API Node.js 22 dependency-free example
 
 1. Enter the key without putting it in the command line:
    read -r -s -p "Earth API key: " EARTH_API_KEY
@@ -22,14 +33,20 @@ Earth API Node.js 22 preview example
    export EARTH_RUN_GENERATION=1
    node docs/examples/earth-api-node.mjs
 
-The script has no automatic retries. Generation may incur charges. Confirm the
-migration, account access, enabled model, and current price before step 3.
+4. Optional: request Fast for that generation call:
+   export EARTH_FAST=1
+
+The script has no automatic retries. Generation may incur charges. Confirm
+account access, the enabled model, and current pricing before step 3. A requested
+Fast tier is not proof of the actual tier; inspect the terminal response metadata.
 `.trim());
   process.exit(0);
 }
 
 if (!apiKey) {
-  console.error("EARTH_API_KEY is required. Run with --help for safe setup instructions.");
+  console.error(
+    "EARTH_API_KEY is required. Run with --help for safe setup instructions.",
+  );
   process.exit(1);
 }
 
@@ -46,6 +63,7 @@ async function requestJson(path, options = {}, timeoutMs = 30_000) {
     },
   });
 
+  const requestId = response.headers.get("x-request-id");
   const text = await response.text();
   let payload;
   try {
@@ -55,28 +73,54 @@ async function requestJson(path, options = {}, timeoutMs = 30_000) {
   }
 
   if (!response.ok) {
-    const detail =
-      typeof payload?.error?.message === "string"
-        ? payload.error.message
-        : text.slice(0, 800) || response.statusText;
-    throw new Error(`Earth API HTTP ${response.status}: ${detail}`);
+    throw new EarthHttpError(response.status, requestId);
   }
 
   if (!payload || typeof payload !== "object") {
-    throw new Error("Earth API returned a non-JSON or empty response.");
+    throw new SafeExampleError(
+      `Earth API returned a non-JSON or empty response${
+        requestId ? ` (request ID ${requestId})` : ""
+      }.`,
+    );
   }
 
-  return payload;
+  return { payload, requestId };
+}
+
+function printMetadata({ requestId, serviceTier, usage }) {
+  console.error("\nResponse metadata:");
+  console.error(`- request_id: ${requestId ?? "not returned"}`);
+  console.error(`- service_tier: ${serviceTier ?? "not returned"}`);
+
+  if (!usage || typeof usage !== "object") {
+    console.error(
+      "- usage: not returned; check the Earth API console before reconciling cost",
+    );
+    return;
+  }
+
+  const fields = ["prompt_tokens", "completion_tokens", "total_tokens"];
+  const summary = fields
+    .filter((field) => Number.isFinite(usage[field]))
+    .map((field) => `${field}=${usage[field]}`);
+
+  console.error(
+    summary.length > 0
+      ? `- usage: ${summary.join(", ")}`
+      : "- usage: returned without recognized token totals; check the Earth API console",
+  );
 }
 
 try {
-  const catalog = await requestJson("/models");
+  const { payload: catalog } = await requestJson("/models");
   const modelIds = Array.isArray(catalog.data)
     ? catalog.data.map((item) => item?.id).filter((id) => typeof id === "string")
     : [];
 
   if (modelIds.length === 0) {
-    throw new Error("The model catalog contained no usable model IDs.");
+    throw new SafeExampleError(
+      "The model catalog contained no usable model IDs.",
+    );
   }
 
   console.log("Models available to this account:");
@@ -85,19 +129,23 @@ try {
   if (!runGeneration) {
     console.log(
       "\nModel listing completed. No generation request was sent. " +
-        "Review current pricing, then use EARTH_RUN_GENERATION=1 explicitly."
+        "Review current pricing, then use EARTH_RUN_GENERATION=1 explicitly.",
     );
     process.exit(0);
   }
 
   if (!selectedModel) {
-    throw new Error("EARTH_MODEL is required when EARTH_RUN_GENERATION=1.");
+    throw new SafeExampleError(
+      "EARTH_MODEL is required when EARTH_RUN_GENERATION=1.",
+    );
   }
   if (!modelIds.includes(selectedModel)) {
-    throw new Error("EARTH_MODEL was not present in this account's current model list.");
+    throw new SafeExampleError(
+      "EARTH_MODEL was not present in this account's current model list.",
+    );
   }
 
-  const completion = await requestJson(
+  const { payload: completion, requestId } = await requestJson(
     "/chat/completions",
     {
       method: "POST",
@@ -106,24 +154,49 @@ try {
         messages: [
           {
             role: "user",
-            content: process.env.EARTH_PROMPT || "Reply with one short greeting.",
+            content:
+              process.env.EARTH_PROMPT || "Reply with one short greeting.",
           },
         ],
         stream: false,
+        ...(requestFast ? { service_tier: "fast" } : {}),
       }),
     },
-    120_000
+    120_000,
   );
 
   const output = completion?.choices?.[0]?.message?.content;
   if (typeof output !== "string" || !output.trim()) {
-    throw new Error("The response did not contain choices[0].message.content.");
+    printMetadata({
+      requestId,
+      serviceTier: completion?.service_tier,
+      usage: completion?.usage,
+    });
+    throw new SafeExampleError(
+      "The response did not contain choices[0].message.content.",
+    );
   }
 
   console.log("\nGeneration result:");
   console.log(output);
+  printMetadata({
+    requestId,
+    serviceTier: completion.service_tier,
+    usage: completion.usage,
+  });
 } catch (error) {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(message);
+  if (error instanceof EarthHttpError) {
+    const details = [`HTTP ${error.status}`];
+    if (error.requestId) details.push(`request ID ${error.requestId}`);
+    console.error(`Earth API request failed (${details.join(", ")}).`);
+  } else if (error instanceof SafeExampleError) {
+    console.error(`Earth API example stopped: ${error.message}`);
+  } else {
+    const name = error instanceof Error ? error.constructor.name : "UnknownError";
+    console.error(`Earth API request failed: ${name}`);
+  }
+  console.error(
+    "Local timeouts do not prove cancellation. Check Usage before retrying.",
+  );
   process.exit(1);
 }
