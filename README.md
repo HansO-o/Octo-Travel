@@ -10,7 +10,7 @@ Start with the [one-page Earth API developer overview](docs/earth-api-overview.m
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 2 October 2026 at 12:34 (Asia/Shanghai):
+Current public status, checked 2 October 2026 at 13:37 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
@@ -27,6 +27,8 @@ Want to use a configurable AI backend with this travel planner? See [Connect Roa
 Tooling can read the [Earth API service metadata](docs/earth-api-service.json) or import the [OpenAPI 3.1 reference](docs/earth-api-openapi.yaml). These files document the public developer surface and request shapes while requiring developers to verify current account access, rates, and capacity.
 
 Developers can also import the [Earth API Postman collection](docs/earth-api-postman-collection.json). It defaults to model discovery and blocks generation until the user explicitly opts in and selects a current model.
+
+The [dependency-free Node.js example](docs/examples/earth-api-node.mjs) uses only Node.js 22 built-ins, lists models by default, and requires explicit environment opt-in before one Chat Completions request. It supports an optional Fast request and reports the Earth-facing request ID, actual service tier, and returned terminal usage without exposing the raw upstream error body.
 
 The [OpenAI JavaScript SDK example](docs/examples/earth-api-openai-sdk.mjs) uses Node.js 22+, lists models by default, disables automatic retries, and requires explicit opt-in for Chat Completions or Responses. It supports optional streaming and Fast requests, and reports the Earth-facing request ID, actual service tier, and returned terminal usage without estimating missing values.
 
