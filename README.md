@@ -10,7 +10,7 @@ Start with the [one-page Earth API developer overview](docs/earth-api-overview.m
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 2 October 2026 at 16:36 (Asia/Shanghai):
+Current public status, checked 2 October 2026 at 17:38 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
@@ -36,7 +36,7 @@ The [OpenAI Python SDK example](docs/examples/earth_api_openai_sdk.py) uses Pyth
 
 The [Anthropic Messages Python example](docs/examples/earth_api_anthropic_messages.py) uses only the Python 3.10+ standard library. It lists models by default, requires explicit `--generate --model`, and reports terminal Usage and Earth-facing request IDs while sanitizing HTTP errors and rejecting known upstream-only metadata.
 
-The [Anthropic Messages Node.js example](docs/examples/earth-api-anthropic-messages.mjs) uses built-in Node.js 22+ `fetch`, lists models by default, and applies the same explicit opt-in before sending one Messages request.
+The [Anthropic Messages Node.js example](docs/examples/earth-api-anthropic-messages.mjs) uses built-in Node.js 22+ `fetch`, lists models by default, and requires explicit `--generate --model`. It reports terminal Usage and Earth-facing request IDs while sanitizing HTTP errors and recursively rejecting known upstream-only metadata.
 
 The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags; generation supports optional `-fast`, terminal Usage, actual-tier output, Earth-facing request IDs, and sanitized HTTP errors.
 
