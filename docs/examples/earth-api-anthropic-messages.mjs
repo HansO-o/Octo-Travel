@@ -2,6 +2,23 @@
 
 const BASE_URL = "https://api.earth.icu/v1";
 const ANTHROPIC_VERSION = "2023-06-01";
+const UPSTREAM_ONLY_KEYS = new Set([
+  "access_programs",
+  "upstreamId",
+  "upstreamRequestId",
+  "upstream_model",
+  "upstreamModel",
+  "upstream_response_id",
+]);
+
+class EarthHttpError extends Error {
+  constructor(status, requestId) {
+    super(`Earth API request failed with HTTP ${status}.`);
+    this.name = "EarthHttpError";
+    this.status = status;
+    this.requestId = requestId;
+  }
+}
 
 function usage() {
   console.log(`Usage:
@@ -52,17 +69,41 @@ function parseArgs(argv) {
   return options;
 }
 
+function collectUpstreamOnlyPaths(value, path = "$", matches = []) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectUpstreamOnlyPaths(item, `${path}[${index}]`, matches));
+    return matches;
+  }
+  if (!value || typeof value !== "object") return matches;
+
+  for (const [key, item] of Object.entries(value)) {
+    const childPath = `${path}.${key}`;
+    if (UPSTREAM_ONLY_KEYS.has(key)) matches.push(childPath);
+    collectUpstreamOnlyPaths(item, childPath, matches);
+  }
+  return matches;
+}
+
+function extractText(body) {
+  if (!Array.isArray(body.content)) return "";
+  return body.content
+    .filter((block) => block && block.type === "text" && typeof block.text === "string")
+    .map((block) => block.text)
+    .join("");
+}
+
 async function requestJson(url, init, timeoutMs) {
   const response = await fetch(url, {
     ...init,
     redirect: "error",
     signal: AbortSignal.timeout(timeoutMs),
   });
-  const text = await response.text();
+  const requestId = response.headers.get("x-request-id");
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${text.slice(0, 2000)}`);
+    throw new EarthHttpError(response.status, requestId);
   }
 
+  const text = await response.text();
   let body;
   try {
     body = JSON.parse(text);
@@ -72,11 +113,11 @@ async function requestJson(url, init, timeoutMs) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     throw new Error("Earth API returned an unexpected JSON shape.");
   }
-  return body;
+  return { body, requestId };
 }
 
 async function listModels(apiKey) {
-  const catalog = await requestJson(
+  const { body: catalog } = await requestJson(
     `${BASE_URL}/models`,
     {
       method: "GET",
@@ -115,6 +156,32 @@ async function createMessage(apiKey, options) {
   );
 }
 
+function printMessageResult(body, requestId) {
+  const upstreamOnlyPaths = collectUpstreamOnlyPaths(body);
+  if (upstreamOnlyPaths.length > 0) {
+    throw new Error(
+      `Safety check failed: response contained upstream-only metadata at ${upstreamOnlyPaths.join(", ")}.`,
+    );
+  }
+
+  const text = extractText(body);
+  if (!text) {
+    throw new Error("Earth API returned no user-visible text content.");
+  }
+  console.log(text);
+  console.error(`Earth request ID: ${requestId || "not returned"}`);
+
+  const inputTokens = body.usage?.input_tokens;
+  const outputTokens = body.usage?.output_tokens;
+  if (Number.isFinite(inputTokens) && Number.isFinite(outputTokens)) {
+    console.error(`Terminal Usage: input_tokens=${inputTokens}, output_tokens=${outputTokens}`);
+  } else {
+    console.error(
+      "Terminal Usage: not returned. Check the Earth API console; this example does not estimate tokens.",
+    );
+  }
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const apiKey = process.env.EARTH_API_KEY;
@@ -136,12 +203,19 @@ async function main() {
     throw new Error("Selected model was not returned by the authenticated catalog.");
   }
 
-  const result = await createMessage(apiKey, options);
-  console.log(JSON.stringify(result, null, 2));
-  console.error("A local timeout does not prove server-side cancellation.");
+  const { body, requestId } = await createMessage(apiKey, options);
+  printMessageResult(body, requestId);
+  console.error("A local timeout does not prove server-side cancellation; check Usage before retrying.");
 }
 
 main().catch((error) => {
-  console.error(error instanceof Error ? error.message : String(error));
+  if (error instanceof EarthHttpError) {
+    console.error(error.message);
+    console.error(`Earth request ID: ${error.requestId || "not returned"}`);
+  } else if (error?.name === "TimeoutError") {
+    console.error("The local request timed out. Check Earth Usage before retrying.");
+  } else {
+    console.error(error instanceof Error ? error.message : String(error));
+  }
   process.exitCode = 1;
 });
