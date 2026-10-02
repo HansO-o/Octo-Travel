@@ -10,7 +10,7 @@ Start with the [one-page Earth API developer overview](docs/earth-api-overview.m
 
 [Earth API](https://api.earth.icu) is a maintainer-operated AI API relay with OpenAI Responses, Chat Completions, and Anthropic Messages request formats. The official English product page, [developer documentation](https://api.earth.icu/docs), OGS-backed console and sign-up entry, public pricing rows, and paid API requests are live. On 30 September 2026, thirteen end-to-end checks passed for `gpt-6-sol` and `claude-opus-5-5`. This repository provides a quickstart for `https://api.earth.icu/v1`, including model discovery, server-side key handling, request examples, and troubleshooting. Verify current access, pricing, and capacity before production use.
 
-Current public status, checked 2 October 2026 at 14:33 (Asia/Shanghai):
+Current public status, checked 2 October 2026 at 15:35 (Asia/Shanghai):
 
 | Item | Verified public state |
 | --- | --- |
@@ -38,7 +38,7 @@ The [Anthropic Messages Python example](docs/examples/earth_api_anthropic_messag
 
 The [Anthropic Messages Node.js example](docs/examples/earth-api-anthropic-messages.mjs) uses built-in Node.js 22+ `fetch`, lists models by default, and applies the same explicit opt-in before sending one Messages request.
 
-The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags for Chat Completions or Responses.
+The [Go standard-library example](docs/examples/earth-api-go.go) adds a dependency-free backend option. It lists models by default and requires explicit `-generate -model` flags; generation supports optional `-fast`, terminal Usage, actual-tier output, Earth-facing request IDs, and sanitized HTTP errors.
 
 The [PHP 8.2 dependency-free example](docs/examples/earth-api-php.php) lists the authenticated model catalog by default and requires explicit `--generate --model=...` flags before it sends one Chat Completions or Responses request.
 
