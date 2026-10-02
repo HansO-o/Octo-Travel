@@ -47,7 +47,7 @@ Use an Earth API key only from server-side code. Keep keys, account tokens, bill
 
 ## Examples
 
-- [Dependency-free Node.js example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-node.mjs): Lists models by default and sends no generation request without explicit environment settings.
+- [Dependency-free Node.js example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-node.mjs): Node.js 22+ built-in-fetch client that lists models by default and requires explicit generation opt-in, with optional Fast, terminal usage, actual-tier output, Earth-facing request IDs, and sanitized HTTP errors.
 - [OpenAI JavaScript SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth-api-openai-sdk.mjs): Node.js 22+ example for Chat Completions or Responses with explicit generation flags, automatic retries disabled, opt-in streaming, optional Fast requests, terminal usage checks, actual-tier output, and Earth-facing request IDs.
 - [OpenAI Python SDK example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_openai_sdk.py): Python 3.10+ example for Chat Completions or Responses with explicit generation flags, automatic retries disabled, optional Fast requests, terminal usage checks, actual-tier output, and Earth-facing request IDs.
 - [Anthropic Messages Python example](https://raw.githubusercontent.com/HansO-o/Octo-Travel/main/docs/examples/earth_api_anthropic_messages.py): Dependency-free Python 3.10+ client that lists models by default and requires explicit generation flags for one Messages request.
