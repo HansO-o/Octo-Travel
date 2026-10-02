@@ -2,11 +2,11 @@
   "info": {
     "_postman_id": "52aa5a7f-391c-4c26-b5f4-391a7d089e77",
     "name": "Earth API — Developer Collection",
-    "description": "Importable request templates for the live Earth API service, maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. The public product, documentation, console entry, model catalog, and pricing rows were rechecked on 1 October 2026. Verify your authenticated catalog, account access, balance, and current prices before testing. Generation is disabled until runGeneration is exactly YES; built-in search examples also require enableWebSearch to be exactly YES. The gateway may retry one eligible transient failure before any public output begins, but it does not replay after output starts. Do not add immediate client retry loops until you understand the response and Usage record. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
+    "description": "Importable request templates for the live Earth API service, maintained by the Earth API operator with AI assistance. The collection uses only https://api.earth.icu/v1. The public product, documentation, console entry, model catalog, and pricing rows were rechecked on 2 October 2026. Verify your authenticated catalog, account access, balance, and current prices before testing. Generation is disabled until runGeneration is exactly YES; built-in search examples also require enableWebSearch to be exactly YES. The gateway may retry one eligible transient failure before any public output begins, but it does not replay after output starts. Collection-level tests save the Earth-facing request ID, actual service tier when returned, and terminal Usage status without logging raw response bodies. They also recursively reject known upstream-only metadata fields. Do not add immediate client retry loops until you understand the response and Usage record. Do not store production keys, private prompts, personal data, or billing details in a shared collection. No request runs automatically.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "version": {
       "major": 1,
-      "minor": 2,
+      "minor": 3,
       "patch": 0
     }
   },
@@ -62,6 +62,24 @@
       "value": "NO",
       "type": "string",
       "description": "Set exactly YES only after confirming the selected model and route support built-in search."
+    },
+    {
+      "key": "lastEarthRequestId",
+      "value": "not run",
+      "type": "string",
+      "description": "Populated after a request; share this Earth-facing ID with support instead of raw upstream details."
+    },
+    {
+      "key": "lastServiceTier",
+      "value": "not run",
+      "type": "string",
+      "description": "Populated from the terminal JSON response when service_tier is present."
+    },
+    {
+      "key": "lastUsageStatus",
+      "value": "not run",
+      "type": "string",
+      "description": "Populated as returned, missing, or not applicable after each request."
     }
   ],
   "item": [
@@ -419,6 +437,81 @@
         "description": "Codex OAuth route example using the built-in web_search tool. It requires both runGeneration and enableWebSearch to be exactly YES, a compatible model and route, and may incur search and generation charges. Search availability is not guaranteed for every account or model."
       },
       "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "id": "earth-support-summary",
+        "type": "text/javascript",
+        "exec": [
+          "const requestId = pm.response.headers.get('x-request-id') || 'not returned';",
+          "pm.collectionVariables.set('lastEarthRequestId', requestId);",
+          "",
+          "const contentType = pm.response.headers.get('content-type') || '';",
+          "let body = null;",
+          "if (contentType.includes('application/json')) {",
+          "  try { body = pm.response.json(); } catch (_) { body = null; }",
+          "}",
+          "",
+          "const serviceTier = body && typeof body.service_tier === 'string'",
+          "  ? body.service_tier",
+          "  : 'not returned';",
+          "pm.collectionVariables.set('lastServiceTier', serviceTier);",
+          "",
+          "const method = String(pm.request.method || '').toUpperCase();",
+          "const url = pm.request.url.toString();",
+          "const isGeneration = method === 'POST' && /\\/(chat\\/completions|responses|messages)(?:\\?|$)/.test(url);",
+          "const isSuccess = pm.response.code >= 200 && pm.response.code < 300;",
+          "const usageReturned = Boolean(body && body.usage && typeof body.usage === 'object');",
+          "pm.collectionVariables.set(",
+          "  'lastUsageStatus',",
+          "  isGeneration ? (usageReturned ? 'returned' : 'missing') : 'not applicable'",
+          ");",
+          "",
+          "if (body) {",
+          "  const forbidden = new Set([",
+          "    'access_programs',",
+          "    'upstreamid',",
+          "    'upstreamrequestid',",
+          "    'upstream_model',",
+          "    'upstreammodel',",
+          "    'upstream_response_id'",
+          "  ]);",
+          "  const hits = [];",
+          "  const visit = (value, path) => {",
+          "    if (!value || typeof value !== 'object') return;",
+          "    if (Array.isArray(value)) {",
+          "      value.forEach((entry, index) => visit(entry, `${path}[${index}]`));",
+          "      return;",
+          "    }",
+          "    Object.keys(value).forEach((key) => {",
+          "      if (forbidden.has(key.toLowerCase())) hits.push(`${path}.${key}`);",
+          "      visit(value[key], `${path}.${key}`);",
+          "    });",
+          "  };",
+          "  visit(body, '$');",
+          "  pm.test('Public JSON omits known upstream-only metadata at every depth', function () {",
+          "    pm.expect(hits, `Found upstream-only fields: ${hits.join(', ')}`).to.be.empty;",
+          "  });",
+          "}",
+          "",
+          "if (isGeneration && isSuccess) {",
+          "  pm.test('Successful terminal generation returns Usage', function () {",
+          "    pm.expect(body, 'Expected a JSON terminal response').to.be.an('object');",
+          "    pm.expect(body.usage, 'Usage was not returned; check the Earth console before retrying').to.be.an('object');",
+          "  });",
+          "}",
+          "",
+          "console.info('Earth support summary', JSON.stringify({",
+          "  http_status: pm.response.code,",
+          "  earth_request_id: requestId,",
+          "  service_tier: serviceTier,",
+          "  usage: isGeneration ? (usageReturned ? 'returned' : 'missing') : 'not applicable'",
+          "}));"
+        ]
+      }
     }
   ]
 }
